@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Kerma",
+    "slug": "kerma",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FAFAF8"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.pionexis.kerma",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Kerma uses your location to find the nearest stores and calculate real travel costs for your shopping optimization.",
+        "NSCameraUsageDescription": "Kerma uses your camera to scan grocery receipts and build your household history.",
+        "NSMicrophoneUsageDescription": "Kerma uses your microphone so you can dictate your shopping list hands-free."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A6B4B"
+      },
+      "package": "com.pionexis.kerma",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Kerma uses your location to find nearest stores and calculate real travel costs."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Kerma uses your camera to scan grocery receipts."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "scheme": "kerma"
+  }
+}
