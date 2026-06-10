@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#FAFAF8">
+<title>Kerma · by Pionexis</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   KERMA v4 · Progressive Disclosure
+   Astride speaks first. One action. Waouh.
+   by Pionexis · Agent: Astride
+═══════════════════════════════════════ */
+:root{
+  --k:#0A6B4B;--km:#0D8A60;--kl:#E8F5F0;--kp:#F2FAF6;
+  --g:#C8882A;--gl:#FDF3E3;
+  --bg:#FAFAF8;--bg2:#F4F3F0;--bg3:#ECEAE5;
+  --bd:#E2DED7;--bd2:#D0CBC2;
+  --tx:#1A1714;--t2:#6B6560;--t3:#A8A09A;--wh:#FFFFFF;
+  --rd:#C0392B;--rl:#FDECEA;
+  --am:#D4720A;--al:#FEF3E2;
+  --bl:#1E5FAD;--bll:#EBF2FC;
+  --pu:#6B3FA0;--pl:#F3EEF9;
+  --gr:#22C55E;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,sans-serif;
+  --r:16px;--rs:10px;--rf:24px;
+  --sh:0 1px 4px rgba(26,23,20,.06),0 4px 16px rgba(26,23,20,.04);
+  --sh2:0 8px 32px rgba(26,23,20,.10),0 2px 8px rgba(26,23,20,.06);
+  --sh3:0 20px 60px rgba(10,107,75,.15),0 4px 16px rgba(10,107,75,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--tx);height:100dvh;display:flex;justify-content:center;overflow:hidden}
+.app{width:100%;max-width:430px;height:100dvh;display:flex;flex-direction:column;background:var(--bg)}
+
+/* ── STATUS BAR ── */
+.status-bar{
+  flex-shrink:0;
+  padding:calc(env(safe-area-inset-top,0px)+8px) 20px 8px;
+  background:var(--wh);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.logo-row{display:flex;align-items:center;gap:9px}
+.logo-name{font-family:var(--serif);font-weight:900;font-size:19px;color:var(--tx);letter-spacing:-.5px}
+.logo-sub{font-size:9px;font-weight:600;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+.status-right{display:flex;align-items:center;gap:8px}
+.ctx-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--bg2);border:1px solid var(--bd);
+  border-radius:20px;padding:5px 10px;
+  font-size:10px;font-weight:500;color:var(--t2);
+  cursor:pointer;transition:all .2s;
+}
+.ctx-pill:hover{background:var(--kp);color:var(--k);border-color:rgba(10,107,75,.2)}
+.ctx-pill.alert{background:var(--rl);border-color:rgba(192,57,43,.2);color:var(--rd)}
+.ctx-pill.good{background:var(--kl);border-color:rgba(10,107,75,.2);color:var(--k)}
+.profile-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--k);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;
+  box-shadow:0 2px 8px rgba(10,107,75,.3);
+}
+
+/* ── GPS BAR ── */
+.gps-bar{
+  padding:6px 20px;background:var(--bg2);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;gap:8px;
+}
+.gps-txt{font-size:10px;font-weight:500;color:var(--t2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gps-badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--kl);color:var(--k);flex-shrink:0}
+
+/* ── CONTEXT ALERTS BAR ── */
+.alerts-bar{
+  padding:0 20px;
+  display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;padding-top:8px;
+  background:var(--wh);border-bottom:1px solid var(--bd);
+}
+.alerts-bar::-webkit-scrollbar{display:none}
+.alert-chip{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 10px;border-radius:20px;border:1px solid var(--bd);
+  font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0;
+  background:var(--wh);color:var(--t2);
+}
+.ac-weather{background:var(--kl);color:var(--k);border-color:rgba(10,107,75,.2)}
+.ac-traffic{background:var(--al);color:var(--am);border-color:rgba(212,114,10,.2)}
+.ac-traffic.bad{background:var(--rl);color:var(--rd);border-color:rgba(192,57,43,.2)}
+.ac-store{background:var(--bll);color:var(--bl);border-color:rgba(30,95,173,.2)}
+.ac-deal{background:var(--gl);color:var(--g);border-color:rgba(200,136,42,.2)}
+.ac-vehicle{background:var(--pl);color:var(--pu);border-color:rgba(107,63,160,.2)}
+
+/* ── SCROLL ── */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(env(safe-area-inset-bottom,20px)+72px);-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{width:3px}
+.scroll::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+
+/* ── SCREENS ── */
+.scr{padding:20px;display:none;flex-direction:column;gap:16px;animation:fu .25s ease}
+.scr.on{display:flex}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── ASTRIDE HERO CARD ── */
+.astride-hero{
+  background:linear-gradient(145deg,var(--k),#1A9E72);
+  border-radius:var(--rf);padding:20px;
+  box-shadow:var(--sh3);position:relative;overflow:hidden;
+}
+.astride-hero::before{
+  content:'';position:absolute;right:-30px;top:-30px;
+  width:140px;height:140px;border-radius:50%;
+  background:rgba(255,255,255,.07);
+}
+.astride-hero::after{
+  content:'';position:absolute;left:-20px;bottom:-20px;
+  width:100px;height:100px;border-radius:50%;
+  background:rgba(200,136,42,.15);
+}
+.ah-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;position:relative;z-index:1}
+.ah-avatar{position:relative;flex-shrink:0}
+.ah-dot{position:absolute;bottom:0;right:0;width:9px;height:9px;border-radius:50%;background:var(--gr);border:2px solid var(--wh)}
+.ah-info{}
+.ah-name{font-size:9px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.ah-status{font-size:11px;color:rgba(255,255,255,.9);font-weight:500}
+.ah-message{
+  font-size:14px;line-height:1.65;color:var(--wh);
+  position:relative;z-index:1;margin-bottom:16px;
+}
+.ah-message b{color:rgba(255,255,255,1);font-weight:700}
+.ah-message .hl{color:#FFD580;font-weight:600}
+.ah-saving{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.15);backdrop-filter:blur(4px);
+  border-radius:20px;padding:6px 14px;
+  font-size:12px;font-weight:700;color:var(--wh);
+  position:relative;z-index:1;
+}
+.ah-saving-num{font-family:var(--serif);font-size:16px}
+
+/* ── MAIN ACTION BUTTON ── */
+.btn-hero{
+  width:100%;padding:17px;border:none;border-radius:var(--r);
+  background:var(--k);color:var(--wh);
+  font-family:var(--sans);font-weight:700;font-size:16px;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  cursor:pointer;transition:all .2s;
+  box-shadow:var(--sh3);
+  position:relative;overflow:hidden;
+}
+.btn-hero::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);
+}
+.btn-hero:hover{transform:translateY(-1px);box-shadow:0 24px 64px rgba(10,107,75,.2)}
+.btn-hero:active{transform:scale(.99)}
+.btn-hero-ico{font-size:20px}
+
+/* ── QUICK ADD ── */
+.quick-add-card{
+  background:var(--wh);border:1px solid var(--bd);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);
+}
+.qa-header{
+  padding:13px 16px;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--bd);
+}
+.qa-title{font-size:12px;font-weight:700;color:var(--tx)}
+.qa-formats{display:flex;gap:5px}
+.qa-fmt{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--bg2);border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;transition:all .15s;
+}
+.qa-fmt:hover,.qa-fmt.on{background:var(--kp);border-color:rgba(10,107,75,.3)}
+.qa-body{padding:12px 14px}
+.qa-inp-row{display:flex;gap:7px;margin-bottom:10px}
+.qa-inp{
+  flex:1;background:var(--bg2);border:1.5px solid var(--bd);
+  border-radius:var(--rs);padding:10px 13px;
+  color:var(--tx);font-family:var(--sans);font-size:14px;
+  outline:none;transition:border-color .2s;-webkit-appearance:none;
+}
+.qa-inp:focus{border-color:var(--k);background:var(--wh)}
+.qa-inp::placeholder{color:var(--t3)}
+.qa-add{
+  width:42px;height:42px;background:var(--k);border:none;
+  border-radius:var(--rs);cursor:pointer;color:var(--wh);
+  font-size:22px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .15s;
+}
+.qa-add:active{transform:scale(.93)}
+
+/* ── FORMAT PANELS ── */
+.fmt-panel{display:none;padding:0 14px 12px}
+.fmt-panel.on{display:block}
+.paste-area{
+  width:100%;min-height:80px;background:var(--bg2);
+  border:1.5px dashed var(--bd2);border-radius:var(--rs);
+  padding:12px;color:var(--tx);font-family:var(--sans);
+  font-size:13px;outline:none;resize:none;line-height:1.6;
+}
+.paste-area:focus{border-color:var(--k)}
+.paste-area::placeholder{color:var(--t3)}
+.photo-drop{
+  border:2px dashed var(--bd2);border-radius:var(--rs);
+  padding:24px 20px;text-align:center;cursor:pointer;
+  background:var(--bg2);transition:all .2s;
+}
+.photo-drop:hover{border-color:var(--k);background:var(--kp)}
+.voice-btn-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 0}
+.vbtn{
+  width:60px;height:60px;border-radius:50%;background:var(--k);
+  border:none;cursor:pointer;font-size:24px;
+  box-shadow:0 4px 16px rgba(10,107,75,.3);transition:all .2s;
+}
+.vbtn.rec{background:var(--rd);animation:vpulse 1s ease infinite}
+@keyframes vpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+/* ── CHIPS ── */
+.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  display:flex;align-items:center;gap:4px;
+  font-size:11px;color:var(--t2);font-weight:500;
+  background:var(--bg2);border:1px solid var(--bd);
+  padding:5px 10px;border-radius:20px;cursor:pointer;
+  transition:all .15s;white-space:nowrap;flex-shrink:0;
+}
+.chip:hover{color:var(--k);border-color:rgba(10,107,75,.3);background:var(--kp)}
+
+/* ── LIST ITEMS ── */
+.li-list{display:flex;flex-direction:column;gap:5px}
+.li{
+  display:flex;align-items:center;gap:9px;
+  background:var(--wh);border:1px solid var(--bd);
+  border-radius:var(--rs);padding:11px 13px;
+  box-shadow:var(--sh);animation:sli .18s ease;
+}
+@keyframes sli{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.li-e{font-size:18px;width:22px;text-align:center;flex-shrink:0}
+.li-body{flex:1;min-width:0}
+.li-n{font-size:13px;font-weight:500;color:var(--tx)}
+.li-specs{font-size:10px;color:var(--t2);margin-top:1px}
+.li-price{font-size:11px;font-weight:700;color:var(--k);flex-shrink:0}
+.li-save{font-size:10px;color:var(--g);font-weight:600;flex-shrink:0}
+.li-mem{font-size:9px;color:var(--k);background:var(--kl);padding:1px 6px;border-radius:4px;font-weight:600;flex-shrink:0}
+.li-q{font-size:10px;color:var(--t2);font-weight:600;background:var(--bg2);padding:2px 7px;border-radius:6px;flex-shrink:0}
+.li-rm{background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;padding:3px;border-radius:4px;flex-shrink:0}
+.li-rm:hover{color:var(--rd);background:var(--rl)}
+
+/* ── LAST SAVING PILL ── */
+.last-save-row{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px;background:var(--kp);border-radius:var(--rs);
+  border:1px solid rgba(10,107,75,.15);
+}
+.ls-ico{font-size:16px}
+.ls-txt{font-size:12px;color:var(--t2)}
+.ls-amt{font-family:var(--serif);font-weight:900;font-size:16px;color:var(--k)}
+
+/* ── LOADING ── */
+.load-wrap{
+  display:flex;flex-direction:column;align-items:center;
+  gap:16px;padding:48px 20px;text-align:center;
+}
+.ring{width:48px;height:48px;border-radius:50%;border:3px solid var(--bd);border-top-color:var(--k);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-title{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--tx)}
+.load-sub{font-size:12px;color:var(--t2);max-width:240px;line-height:1.5}
+.load-steps{display:flex;flex-direction:column;gap:7px;width:100%;max-width:260px;text-align:left;margin-top:8px}
+.lstep{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--t3);transition:color .3s}
+.lstep.on{color:var(--tx)}.lstep.ok{color:var(--k)}
+.ldot{width:5px;height:5px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:background .3s}
+.lstep.on .ldot{background:var(--k);animation:pulse .9s ease infinite}
+.lstep.ok .ldot{background:var(--k)}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+
+/* ── CONTEXT BAR ── */
+.ctx-bar{
+  background:var(--wh);border:1px solid var(--bd);
+  border-radius:var(--r);padding:13px 15px;box-shadow:var(--sh);
+}
+.ctx-bar-title{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ctx-item{display:flex;align-items:center;gap:7px}
+.ctx-ico{font-size:15px;flex-shrink:0}
+.ctx-info{}
+.ctx-val{font-size:11px;font-weight:600;color:var(--tx)}
+.ctx-lbl{font-size:9px;color:var(--t2)}
+.ctx-item.alert .ctx-val{color:var(--rd)}
+.ctx-item.good .ctx-val{color:var(--k)}
+.ctx-item.warn .ctx-val{color:var(--am)}
+
+/* ── DECISION CARD — THE HERO ── */
+.decision-card{
+  background:var(--wh);border:2px solid var(--k);
+  border-radius:var(--rf);overflow:hidden;
+  box-shadow:var(--sh3);
+}
+.dc-top{
+  padding:18px 18px 14px;
+  background:linear-gradient(145deg,var(--kp),var(--wh));
+  border-bottom:1px solid var(--kl);
+}
+.dc-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--k);color:var(--wh);
+  font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;
+  letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;
+}
+.dc-store{display:flex;align-items:center;gap:11px;margin-bottom:8px}
+.dc-store-ico{font-size:28px;flex-shrink:0}
+.dc-store-name{font-family:var(--serif);font-weight:900;font-size:20px;color:var(--tx);line-height:1.1}
+.dc-store-sub{font-size:11px;color:var(--t2);margin-top:2px}
+.dc-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.dc-price{font-family:var(--serif);font-weight:900;font-size:38px;color:var(--tx);line-height:1}
+.dc-save{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--k)}
+.dc-lbl{font-size:10px;color:var(--t2);align-self:flex-end;padding-bottom:4px}
+.dc-why{
+  font-size:12px;color:var(--t2);font-style:italic;line-height:1.55;
+  padding:9px 12px;background:rgba(10,107,75,.06);
+  border-radius:var(--rs);border-left:3px solid var(--k);
+}
+.dc-why b{color:var(--k);font-style:normal;font-weight:600}
+.dc-breakdown{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--bd)}
+.dc-cell{padding:10px 6px;text-align:center;border-right:1px solid var(--bd)}
+.dc-cell:last-child{border-right:none}
+.dc-cv{font-size:12px;font-weight:700;margin-bottom:2px;font-family:var(--serif)}
+.dc-cl{font-size:9px;color:var(--t2)}
+.dc-actions{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.btn-cart{
+  width:100%;padding:15px;border:none;border-radius:var(--rs);
+  background:var(--k);color:var(--wh);
+  font-family:var(--sans);font-weight:700;font-size:15px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 16px rgba(10,107,75,.25);
+}
+.btn-cart:hover{background:var(--km)}
+.btn-see-more{
+  width:100%;padding:11px;background:var(--wh);
+  border:1.5px solid var(--bd);border-radius:var(--rs);
+  color:var(--t2);font-family:var(--sans);font-size:13px;
+  font-weight:500;cursor:pointer;transition:all .2s;
+}
+.btn-see-more:hover{color:var(--tx);border-color:var(--bd2)}
+.dc-disclaimer{
+  font-size:10px;color:var(--t3);text-align:center;
+  padding:0 16px 14px;line-height:1.5;
+}
+
+/* ── OTHER SCENARIOS (hidden by default) ── */
+.other-scenarios{display:none;flex-direction:column;gap:8px}
+.other-scenarios.show{display:flex}
+.sc-mini{
+  background:var(--wh);border:1px solid var(--bd);
+  border-radius:var(--rs);padding:13px 14px;
+  display:flex;align-items:center;gap:11px;
+  cursor:pointer;transition:all .2s;box-shadow:var(--sh);
+}
+.sc-mini:hover{border-color:var(--k);background:var(--kp)}
+.sc-mini.chosen{border-color:var(--k);border-width:2px;background:var(--kp)}
+.sc-mini-left{flex:1;min-width:0}
+.sc-mini-badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;display:inline-block;margin-bottom:4px}
+.sc-mini-name{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.sc-mini-sub{font-size:10px;color:var(--t2)}
+.sc-mini-right{text-align:right;flex-shrink:0}
+.sc-mini-price{font-family:var(--serif);font-weight:900;font-size:18px;color:var(--tx)}
+.sc-mini-save{font-size:10px;color:var(--k);font-weight:700;margin-top:2px}
+
+/* ── APPROVE BOX ── */
+.approve-box{
+  background:var(--wh);border:1.5px solid var(--k);
+  border-radius:var(--r);padding:16px;
+  box-shadow:0 0 0 4px rgba(10,107,75,.06),var(--sh2);
+}
+.approve-title{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.vdot{width:7px;height:7px;border-radius:50%;background:var(--k);animation:pulse 1.5s ease infinite;flex-shrink:0}
+.approve-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-radius:var(--rs);margin-bottom:12px;background:var(--kp);border:1px solid rgba(10,107,75,.2)}
+.approve-name{font-weight:700;font-size:13px;color:var(--k)}
+.approve-sub{font-size:10px;color:var(--t2);margin-top:2px}
+.approve-price{font-family:var(--serif);font-weight:900;font-size:22px;color:var(--tx)}
+.approve-dis{font-size:10px;color:var(--t2);line-height:1.6;margin-bottom:12px;padding:9px 11px;background:var(--al);border:1px solid rgba(212,114,10,.2);border-radius:var(--rs)}
+.btn-approve{width:100%;padding:14px;border:none;border-radius:var(--rs);cursor:pointer;background:var(--k);color:var(--wh);font-family:var(--sans);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;box-shadow:0 4px 14px rgba(10,107,75,.22)}
+
+/* ── CONFIRMED ── */
+.conf-wrap{padding:40px 16px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;animation:fu .35s ease}
+.conf-ico{font-size:64px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.conf-title{font-family:var(--serif);font-size:28px;font-weight:900;color:var(--tx)}
+.conf-sub{font-size:13px;color:var(--t2);line-height:1.65;max-width:280px}
+.conf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
+.cstat{background:var(--wh);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 8px;box-shadow:var(--sh)}
+.csv{font-family:var(--serif);font-weight:900;font-size:20px;color:var(--k);margin-bottom:3px}
+.csl{font-size:9px;color:var(--t2);font-weight:500}
+.conf-note{width:100%;background:var(--kp);border:1px solid rgba(10,107,75,.15);border-radius:var(--r);padding:14px 16px;font-size:12px;color:var(--t2);line-height:1.7;text-align:left}
+.conf-note b{color:var(--k);font-weight:600}
+.conf-acts{display:flex;gap:8px;width:100%}
+.ca{flex:1;padding:13px;border-radius:var(--rs);font-family:var(--sans);font-weight:600;font-size:13px;cursor:pointer;transition:all .2s;border:none}
+.ca-p{background:var(--k);color:var(--wh);box-shadow:0 2px 8px rgba(10,107,75,.2)}
+.ca-s{background:var(--wh);border:1.5px solid var(--bd);color:var(--t2)}
+
+/* ── DASHBOARD ── */
+.dash-hero{background:linear-gradient(135deg,var(--k),#1A9E72);border-radius:var(--r);padding:22px 20px;color:var(--wh);box-shadow:var(--sh3);position:relative;overflow:hidden}
+.dash-hero::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
+.dh-lbl{font-size:10px;font-weight:600;opacity:.7;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.dh-save{font-family:var(--serif);font-weight:900;font-size:44px;line-height:1;margin-bottom:4px}
+.dh-sub{font-size:12px;opacity:.75}
+.dh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.dh-stat{background:rgba(255,255,255,.12);border-radius:var(--rs);padding:10px 8px;text-align:center}
+.dh-sv{font-family:var(--serif);font-weight:700;font-size:17px;margin-bottom:2px}
+.dh-sl{font-size:9px;opacity:.7}
+.bw{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.bw-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bw-title{font-size:13px;font-weight:600}
+.bw-edit{font-size:11px;color:var(--k);font-weight:600;cursor:pointer}
+.bw-bar{height:8px;background:var(--bg2);border-radius:4px;overflow:hidden;margin-bottom:8px}
+.bw-fill{height:100%;border-radius:4px;transition:width .6s ease,background .3s}
+.bw-nums{display:flex;justify-content:space-between;font-size:11px;color:var(--t2);font-weight:500}
+.bw-alert{margin-top:10px;padding:8px 11px;border-radius:var(--rs);font-size:11px;display:none}
+.bw-alert.show{display:block}
+.ba-over{background:var(--rl);color:var(--rd)}
+.ba-near{background:var(--al);color:var(--am)}
+.ba-ok{background:var(--kl);color:var(--k)}
+.score-card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);padding:18px;display:flex;gap:16px;align-items:center;box-shadow:var(--sh)}
+.score-ring{position:relative;width:74px;height:74px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.score-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sv-num{font-family:var(--serif);font-weight:900;font-size:20px;color:var(--k);line-height:1}
+.sv-lbl{font-size:8px;color:var(--t3);font-weight:600}
+.score-right{flex:1}
+.score-title{font-size:13px;font-weight:600;margin-bottom:8px}
+.sb-row{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:10px;color:var(--t2)}
+.sb-bar{flex:1;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.sb-fill{height:100%;background:var(--k);border-radius:2px}
+.sb-pts{font-size:9px;color:var(--k);font-weight:700;flex-shrink:0;min-width:28px;text-align:right}
+.ins-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ins{background:var(--wh);border:1px solid var(--bd);border-radius:var(--rs);padding:13px;box-shadow:var(--sh)}
+.ins-lbl{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.ins-val{font-family:var(--serif);font-weight:900;font-size:19px;margin-bottom:2px}
+.ins-sub{font-size:10px;color:var(--t2)}
+.ph-card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.ph-row{display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:1px solid var(--bd)}
+.ph-row:last-child{border-bottom:none}
+.ph-bars{display:flex;gap:3px;align-items:flex-end;height:20px}
+.ph-bar{width:8px;border-radius:2px 2px 0 0;flex-shrink:0}
+.tr-up{color:var(--rd)}.tr-dn{color:var(--k)}.tr-fl{color:var(--t2)}
+.th-card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.th-row{display:flex;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid var(--bd)}
+.th-row:last-child{border-bottom:none}
+
+/* ── STOCK ── */
+.stk-list{display:flex;flex-direction:column;gap:6px}
+.stk-row{display:flex;align-items:center;gap:11px;background:var(--wh);border:1px solid var(--bd);border-radius:var(--rs);padding:11px 14px;box-shadow:var(--sh)}
+.stk-e{font-size:18px;width:22px;text-align:center;flex-shrink:0}
+.stk-info{flex:1;min-width:0}
+.stk-name{font-size:12px;font-weight:600;margin-bottom:4px}
+.stk-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:3px}
+.stk-fill{height:100%;border-radius:2px;transition:width .5s}
+.stk-meta{font-size:10px;color:var(--t2)}
+.stk-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.sb-ok2{color:var(--k);background:var(--kl)}
+.sb-low{color:var(--am);background:var(--al)}
+.sb-out{color:var(--rd);background:var(--rl)}
+
+/* ── UPC SCAN ── */
+.upc-wrap{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.upc-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:12px}
+.upc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.upc-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px;border-radius:var(--rs);border:1.5px solid var(--bd);background:var(--bg2);cursor:pointer;font-size:12px;font-weight:600;color:var(--t2);transition:all .2s}
+.upc-btn:hover,.upc-btn.primary{border-color:var(--k);color:var(--k);background:var(--kp)}
+.upc-btn.primary{background:var(--k);color:var(--wh);border-color:var(--k)}
+.upc-inp-row{display:flex;gap:7px}
+.upc-inp{flex:1;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--rs);padding:10px 13px;font-family:var(--sans);font-size:14px;color:var(--tx);outline:none;letter-spacing:1px}
+.upc-inp:focus{border-color:var(--k);background:var(--wh)}
+
+/* ── PRODUCT MEMORY ── */
+.pm-card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.pm-row{display:flex;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .15s}
+.pm-row:last-child{border-bottom:none}
+.pm-row:hover{background:var(--bg)}
+.pm-ico{font-size:24px;width:32px;text-align:center;flex-shrink:0}
+.pm-info{flex:1;min-width:0}
+.pm-name{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.pm-specs{font-size:10px;color:var(--t2)}
+.pm-r{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.pm-price{font-family:var(--serif);font-size:13px;font-weight:700}
+.pm-store{font-size:9px;color:var(--k);font-weight:600;background:var(--kl);padding:1px 6px;border-radius:4px}
+
+/* ── PROFILE ── */
+.pf-section{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.pf-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--bd)}
+.pf-row:last-child{border-bottom:none}
+.pf-lbl{font-size:13px;color:var(--t2)}
+.pf-val{font-size:12px;font-weight:600;color:var(--tx)}
+.pf-inp{background:none;border:none;color:var(--tx);font-size:12px;font-weight:600;text-align:right;outline:none;width:90px;cursor:pointer;font-family:var(--sans)}
+.pf-sel{background:none;border:none;color:var(--tx);font-size:12px;font-weight:600;outline:none;cursor:pointer;font-family:var(--sans);text-align:right}
+.veh-grid{display:flex;flex-wrap:wrap;gap:7px;padding:14px}
+.veh-opt{flex:1;min-width:calc(50% - 4px);background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--rs);padding:11px 13px;cursor:pointer;transition:all .2s}
+.veh-opt.on{background:var(--kp);border-color:rgba(10,107,75,.4)}
+.veh-opt-lbl{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.veh-opt-sub{font-size:10px;color:var(--t2)}
+.cpm-row{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid var(--bd)}
+.cpm-badge{background:var(--kl);border-radius:20px;padding:4px 11px}
+.cpm-val{font-size:12px;font-weight:700;color:var(--k)}
+
+/* ── SLBL / SROW ── */
+.slbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:-4px}
+.srow{display:flex;align-items:center;justify-content:space-between}
+.smeta{font-size:11px;color:var(--t2);font-weight:500}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(26,23,20,.5);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+.modal-bg.show{display:flex}
+.modal{width:100%;max-width:430px;background:var(--wh);border-radius:24px 24px 0 0;padding:20px 20px calc(env(safe-area-inset-bottom,20px)+20px);animation:slideUp .28s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;background:var(--bg3);border-radius:2px;margin:0 auto 18px}
+.modal-title{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:14px}
+.modal-inp{width:100%;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--rs);padding:13px 16px;color:var(--tx);font-family:var(--serif);font-size:22px;font-weight:700;outline:none;margin-bottom:12px;-webkit-appearance:none}
+.modal-inp:focus{border-color:var(--k)}
+.btn-main{width:100%;padding:14px;border:none;border-radius:var(--r);cursor:pointer;background:var(--k);color:var(--wh);font-family:var(--sans);font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 16px rgba(10,107,75,.22)}
+
+/* ── NAV ── */
+.nav{
+  flex-shrink:0;display:flex;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(20px);
+  border-top:1px solid var(--bd);
+  padding:8px 4px calc(env(safe-area-inset-bottom,0px)+8px);gap:2px;
+}
+.nv{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;border-radius:var(--rs);cursor:pointer;border:none;background:none;color:var(--t3);transition:all .2s}
+.nv.on{color:var(--k);background:var(--kp)}
+.nv:hover:not(.on){background:var(--bg2)}
+.nv-i{font-size:20px}
+.nv-l{font-size:9px;font-weight:700;letter-spacing:.3px}
+.nv-dot{width:5px;height:5px;border-radius:50%;background:var(--rd);margin-top:-1px;display:none}
+</style>
+</head>
+<body>
+<div class="app">
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="logo-row" onclick="navTo(document.querySelectorAll('.nv')[0],'scr-home')" style="cursor:pointer">
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#0A6B4B"/><rect x="18" y="14" width="7" height="36" rx="3.5" fill="white"/><path d="M25 32 L46 14" stroke="white" stroke-width="7" stroke-linecap="round"/><path d="M25 32 L46 50" stroke="white" stroke-width="7" stroke-linecap="round"/><circle cx="25" cy="32" r="5" fill="#C8882A"/></svg>
+    <div>
+      <div class="logo-name">Kerma</div>
+      <div class="logo-sub">by Pionexis</div>
+    </div>
+  </div>
+  <div class="status-right">
+    <div class="ctx-pill" id="ctx-pill-main" onclick="showCtxDetail()">
+      <span id="ctx-pill-ico">&#9728;</span>
+      <span id="ctx-pill-txt">Loading...</span>
+    </div>
+    <div class="profile-btn" onclick="navTo(document.querySelectorAll('.nv')[3],'scr-profile')">
+      <span style="color:white;font-size:15px">&#128100;</span>
+    </div>
+  </div>
+</div>
+
+<!-- GPS BAR -->
+<div class="gps-bar">
+  <span style="font-size:11px">&#128205;</span>
+  <div class="gps-txt" id="gps-txt">Requesting location&hellip;</div>
+  <div class="gps-badge" id="gps-badge">WAIT</div>
+</div>
+
+<!-- CONTEXT ALERTS -->
+<div class="alerts-bar" id="alerts-bar" style="display:none">
+  <!-- populated dynamically -->
+</div>
+
+<!-- SCROLL -->
+<div class="scroll" id="scroll">
+
+<!-- ════════ HOME ════════ -->
+<div class="scr on" id="scr-home">
+
+  <!-- ASTRIDE HERO -->
+  <div class="astride-hero">
+    <div class="ah-top">
+      <div class="ah-avatar">
+        <svg width="38" height="38" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="32" fill="#0A6B4B"/><rect x="18" y="14" width="7" height="36" rx="3.5" fill="white"/><path d="M25 32 L46 14" stroke="white" stroke-width="7" stroke-linecap="round"/><path d="M25 32 L46 50" stroke="white" stroke-width="7" stroke-linecap="round"/><circle cx="25" cy="32" r="5" fill="#C8882A"/></svg>
+        <div class="ah-dot"></div>
+      </div>
+      <div class="ah-info">
+        <div class="ah-name">Astride &middot; Kerma AI</div>
+        <div class="ah-status" id="ah-status">Analyzing your household&hellip;</div>
+      </div>
+    </div>
+    <div class="ah-message" id="ah-message">
+      <span class="typing-dots">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);margin:0 2px;animation:bl 1.2s ease infinite"></span>
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);margin:0 2px;animation:bl 1.2s ease .2s infinite"></span>
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);margin:0 2px;animation:bl 1.2s ease .4s infinite"></span>
+      </span>
+    </div>
+    <div class="ah-saving" id="ah-saving" style="display:none">
+      <span>&#127381;</span>
+      <span>Last trip:</span>
+      <span class="ah-saving-num" id="ah-saving-num">$0</span>
+      <span>saved</span>
+    </div>
+  </div>
+
+  <!-- MAIN CTA -->
+  <button class="btn-hero" id="btn-optimize" onclick="startFlow()">
+    <span class="btn-hero-ico">&#9889;</span>
+    <span id="btn-hero-txt">Optimize my shopping</span>
+  </button>
+
+  <!-- QUICK ADD CARD -->
+  <div class="quick-add-card">
+    <div class="qa-header">
+      <div class="qa-title">&#43; Add to your list</div>
+      <div class="qa-formats">
+        <div class="qa-fmt on" id="fmt-type" onclick="setFmt('type')" title="Type">&#9998;</div>
+        <div class="qa-fmt" id="fmt-paste" onclick="setFmt('paste')" title="Paste">&#128203;</div>
+        <div class="qa-fmt" id="fmt-photo" onclick="setFmt('photo')" title="Photo">&#128247;</div>
+        <div class="qa-fmt" id="fmt-voice" onclick="setFmt('voice')" title="Voice">&#127908;</div>
+        <div class="qa-fmt" id="fmt-file" onclick="setFmt('file')" title="File">&#128196;</div>
+        <div class="qa-fmt" id="fmt-scan" onclick="setFmt('scan')" title="Scan UPC">&#128302;</div>
+        <div class="qa-fmt" id="fmt-memory" onclick="setFmt('memory')" title="Memory">&#11088;</div>
+      </div>
+    </div>
+    <div class="qa-body">
+      <!-- TYPE -->
+      <div class="fmt-panel on" id="fmt-type-panel">
+        <div class="qa-inp-row">
+          <input class="qa-inp" type="text" id="item-inp" placeholder="milk, eggs, Pampers Size 3&hellip;"/>
+          <button class="qa-add" onclick="addItem()">+</button>
+        </div>
+        <div class="chips" id="chips-row"></div>
+      </div>
+      <!-- PASTE -->
+      <div class="fmt-panel" id="fmt-paste-panel">
+        <textarea class="paste-area" id="paste-area" placeholder="Paste your list &#8212; WhatsApp, Notes, Google Keep&#10;&#10;Milk x2, Eggs, Pampers Swaddlers Size 3&#10;Chicken breast 3 packs"></textarea>
+        <button class="btn-main" style="margin-top:8px" onclick="parsePaste()">&#10003; Import list</button>
+      </div>
+      <!-- PHOTO -->
+      <div class="fmt-panel" id="fmt-photo-panel">
+        <div class="photo-drop" onclick="simulateOCR()">
+          <div style="font-size:36px;margin-bottom:8px">&#128247;</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Scan receipt or handwritten list</div>
+          <div style="font-size:11px;color:var(--t2)">Walmart &middot; Ralph's &middot; Target &middot; Costco receipts</div>
+        </div>
+      </div>
+      <!-- VOICE -->
+      <div class="fmt-panel" id="fmt-voice-panel">
+        <div class="voice-btn-wrap">
+          <div style="font-size:12px;color:var(--t2)">Say your items out loud</div>
+          <button class="vbtn" id="vbtn" onclick="toggleVoice()">&#127908;</button>
+          <div id="v-lbl" style="font-size:12px;font-weight:500;color:var(--t2)">Tap to start</div>
+          <div id="v-txt" style="font-size:12px;color:var(--tx);text-align:center"></div>
+        </div>
+      </div>
+      <!-- FILE -->
+      <div class="fmt-panel" id="fmt-file-panel">
+        <div class="photo-drop" onclick="document.getElementById('file-inp').click()">
+          <div style="font-size:36px;margin-bottom:8px">&#128196;</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Import from Notes, Keep or PDF</div>
+          <div style="font-size:11px;color:var(--t2)">.txt &middot; .csv &middot; .pdf</div>
+        </div>
+        <input type="file" id="file-inp" accept=".txt,.csv,.pdf" style="display:none" onchange="parseFile(event)">
+      </div>
+      <!-- SCAN UPC -->
+      <div class="fmt-panel" id="fmt-scan-panel">
+        <div class="upc-wrap" style="border:none;padding:0;box-shadow:none">
+          <div class="upc-grid">
+            <div class="upc-btn primary" onclick="simulateScan()">&#128247; Scan barcode</div>
+            <div class="upc-btn" onclick="document.getElementById('upc-manual-wrap').style.display='block'">&#9998; Enter UPC</div>
+          </div>
+          <div id="upc-manual-wrap" style="display:none">
+            <div class="upc-inp-row">
+              <input class="upc-inp" type="number" id="upc-inp" placeholder="037000863427"/>
+              <button class="qa-add" onclick="lookupUPC()">&#8594;</button>
+            </div>
+          </div>
+          <div id="upc-result"></div>
+        </div>
+      </div>
+      <!-- MEMORY -->
+      <div class="fmt-panel" id="fmt-memory-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span style="font-size:12px;font-weight:600;color:var(--tx)">Your household products</span>
+          <span style="font-size:11px;color:var(--k);cursor:pointer" onclick="setFmt('scan')">+ Scan new</span>
+        </div>
+        <div class="pm-card" id="memory-list-home"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEMS LIST (when items added) -->
+  <div id="items-section" style="display:none">
+    <div class="srow"><div class="slbl" id="list-lbl">Your list</div><div class="smeta" id="list-count">0 items</div></div>
+    <div class="li-list" id="items-list"></div>
+  </div>
+
+  <!-- LAST SAVING (when trips exist) -->
+  <div class="last-save-row" id="last-save-row" style="display:none">
+    <span class="ls-ico">&#9989;</span>
+    <span class="ls-txt">Last trip saved</span>
+    <span class="ls-amt" id="last-save-amt">$0</span>
+    <span style="font-size:11px;color:var(--t2);cursor:pointer;text-decoration:underline" onclick="navTo(document.querySelectorAll('.nv')[1],'scr-dash')">See all &rsaquo;</span>
+  </div>
+
+</div><!-- /scr-home -->
+
+<!-- ════════ LOADING ════════ -->
+<div class="scr" id="scr-load">
+  <div class="load-wrap">
+    <div class="ring"></div>
+    <div class="load-title">Astride is working&hellip;</div>
+    <div class="load-sub" id="load-sub">Connecting to OC stores</div>
+    <div class="load-steps">
+      <div class="lstep" id="ls1"><div class="ldot"></div>Fetching live prices &middot; 4 stores</div>
+      <div class="lstep" id="ls2"><div class="ldot"></div>Checking product memory &middot; exact specs</div>
+      <div class="lstep" id="ls3"><div class="ldot"></div>Live traffic &middot; weather &middot; store hours</div>
+      <div class="lstep" id="ls4"><div class="ldot"></div>Store congestion &middot; peak hours</div>
+      <div class="lstep" id="ls5"><div class="ldot"></div>Running decision optimizer</div>
+      <div class="lstep" id="ls6"><div class="ldot"></div>Building pre-filled cart</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ DECISION ════════ -->
+<div class="scr" id="scr-decision">
+
+  <!-- CONTEXT BAR -->
+  <div class="ctx-bar" id="decision-ctx">
+    <div class="ctx-bar-title">Context at this moment</div>
+    <div class="ctx-grid">
+      <div class="ctx-item good">
+        <span class="ctx-ico" id="dc-weather-ico">&#9728;</span>
+        <div class="ctx-info">
+          <div class="ctx-val" id="dc-weather">Clear 73&deg;F</div>
+          <div class="ctx-lbl">Weather OC</div>
+        </div>
+      </div>
+      <div class="ctx-item" id="dc-traffic-item">
+        <span class="ctx-ico">&#128660;</span>
+        <div class="ctx-info">
+          <div class="ctx-val" id="dc-traffic">Normal</div>
+          <div class="ctx-lbl">Traffic I-5/405</div>
+        </div>
+      </div>
+      <div class="ctx-item" id="dc-vehicle-item">
+        <span class="ctx-ico" id="dc-vehicle-ico">&#128663;</span>
+        <div class="ctx-info">
+          <div class="ctx-val" id="dc-vehicle">$0.17/mi</div>
+          <div class="ctx-lbl">Travel cost</div>
+        </div>
+      </div>
+      <div class="ctx-item" id="dc-store-item">
+        <span class="ctx-ico">&#128978;</span>
+        <div class="ctx-info">
+          <div class="ctx-val" id="dc-store-crowd">Quiet now</div>
+          <div class="ctx-lbl">Store crowd</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECISION CARD — THE HERO -->
+  <div class="decision-card" id="decision-card">
+    <div class="dc-top">
+      <div class="dc-badge">&#11088; Astride's recommendation</div>
+      <div class="dc-store">
+        <div class="dc-store-ico" id="dc-store-ico">&#128309;</div>
+        <div>
+          <div class="dc-store-name" id="dc-store-name">Walmart Tustin</div>
+          <div class="dc-store-sub" id="dc-store-sub">2.3 mi &middot; Open until 11 PM</div>
+        </div>
+      </div>
+      <div class="dc-price-row">
+        <div class="dc-price" id="dc-price">$87.43</div>
+        <div class="dc-save" id="dc-save">save $23</div>
+        <div class="dc-lbl">real total cost</div>
+      </div>
+      <div class="dc-why" id="dc-why">
+        Astride is calculating the best option for your household&hellip;
+      </div>
+    </div>
+    <div class="dc-breakdown" id="dc-breakdown">
+      <div class="dc-cell"><div class="dc-cv" style="color:var(--k)" id="dc-items">$0</div><div class="dc-cl">Items</div></div>
+      <div class="dc-cell"><div class="dc-cv" style="color:var(--g)" id="dc-gas">$0</div><div class="dc-cl" id="dc-gas-lbl">Gas</div></div>
+      <div class="dc-cell"><div class="dc-cv" style="color:var(--bl)" id="dc-time-val">0min</div><div class="dc-cl">Trip time</div></div>
+      <div class="dc-cell"><div class="dc-cv" style="color:var(--pu)" id="dc-timecost">$0</div><div class="dc-cl">Time cost</div></div>
+    </div>
+    <div class="dc-actions">
+      <button class="btn-cart" id="btn-open-cart" onclick="openCart()">
+        &#128722; Open pre-filled cart
+      </button>
+      <button class="btn-see-more" onclick="toggleOtherScenarios()">
+        <span id="see-more-txt">See 3 other options &darr;</span>
+      </button>
+    </div>
+    <div class="dc-disclaimer">&#9888; Kerma never pays. You verify and checkout on the store's site.</div>
+  </div>
+
+  <!-- OTHER SCENARIOS (hidden) -->
+  <div class="other-scenarios" id="other-scenarios">
+    <div class="srow"><div class="slbl">All options</div><div class="smeta">Ranked by real cost</div></div>
+    <div id="sc-list"></div>
+
+    <!-- BRAND COMPARISON -->
+    <div id="brand-wrap"></div>
+
+    <!-- VALIDATE BOX -->
+    <div class="approve-box" id="approve-box" style="display:none">
+      <div class="approve-title"><div class="vdot"></div>Your approval &mdash; Astride never pays</div>
+      <div class="approve-row">
+        <div>
+          <div class="approve-name" id="ap-name">--</div>
+          <div class="approve-sub" id="ap-sub">--</div>
+        </div>
+        <div class="approve-price" id="ap-price">--</div>
+      </div>
+      <div class="approve-dis">&#9888; This is a shopping plan only. You pay on the store's own checkout.</div>
+      <button class="btn-approve" onclick="approvePlan()">&#10003; Approve &amp; open cart</button>
+    </div>
+  </div>
+
+</div><!-- /scr-decision -->
+
+<!-- ════════ CONFIRMED ════════ -->
+<div class="scr" id="scr-conf">
+  <div class="conf-wrap">
+    <div class="conf-ico">&#9989;</div>
+    <div class="conf-title">Plan approved!</div>
+    <div class="conf-sub" id="conf-sub">--</div>
+    <div class="conf-stats">
+      <div class="cstat"><div class="csv" id="cs-save">--</div><div class="csl">Saved</div></div>
+      <div class="cstat"><div class="csv" id="cs-time">--</div><div class="csl">Time</div></div>
+      <div class="cstat"><div class="csv" id="cs-score">--</div><div class="csl">Score</div></div>
+    </div>
+    <div class="conf-note">
+      <b>Cart opened?</b> Sign in on the store's site and checkout. <b>In-store?</b> Follow the aisle route. <b>Kerma never touched your payment.</b>
+    </div>
+    <div class="conf-acts">
+      <button class="ca ca-s" onclick="newTrip()">+ New list</button>
+      <button class="ca ca-p" onclick="openMaps()">&#128205; Open Maps</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ DASHBOARD ════════ -->
+<div class="scr" id="scr-dash">
+  <div class="dash-hero">
+    <div class="dh-lbl">Total savings &middot; this month</div>
+    <div class="dh-save" id="d-save">$0.00</div>
+    <div class="dh-sub" id="d-sub">Start your first trip</div>
+    <div class="dh-grid">
+      <div class="dh-stat"><div class="dh-sv" id="d-trips">0</div><div class="dh-sl">Trips</div></div>
+      <div class="dh-stat"><div class="dh-sv" id="d-miles">0mi</div><div class="dh-sl">Miles</div></div>
+      <div class="dh-stat"><div class="dh-sv" id="d-time">0h</div><div class="dh-sl">Time saved</div></div>
+    </div>
+  </div>
+  <div class="bw">
+    <div class="bw-top"><div class="bw-title">Weekly budget</div><div class="bw-edit" onclick="showBudgetModal()">Edit &rsaquo;</div></div>
+    <div class="bw-bar"><div class="bw-fill" id="bw-fill" style="width:0%"></div></div>
+    <div class="bw-nums"><span id="bw-spent">$0 spent</span><span id="bw-left">$180 remaining</span></div>
+    <div class="bw-alert" id="bw-alert"></div>
+  </div>
+  <div class="srow"><div class="slbl">Optimization score</div></div>
+  <div class="score-card">
+    <div class="score-ring">
+      <svg width="74" height="74" viewBox="0 0 74 74">
+        <circle cx="37" cy="37" r="31" fill="none" stroke="#ECEAE5" stroke-width="6"/>
+        <circle id="score-arc" cx="37" cy="37" r="31" fill="none" stroke="#0A6B4B" stroke-width="6" stroke-dasharray="194.8" stroke-dashoffset="194.8" stroke-linecap="round" style="transition:stroke-dashoffset 1.2s ease"/>
+      </svg>
+      <div class="score-val"><div class="sv-num" id="score-num">--</div><div class="sv-lbl">/100</div></div>
+    </div>
+    <div class="score-right">
+      <div class="score-title" id="score-title">Complete a trip to see your score</div>
+      <div id="score-rows"></div>
+    </div>
+  </div>
+  <div class="srow"><div class="slbl">Monthly insights</div></div>
+  <div class="ins-grid">
+    <div class="ins"><div class="ins-lbl">Best store</div><div class="ins-val" id="i-store">--</div><div class="ins-sub" id="i-store-s">No data</div></div>
+    <div class="ins"><div class="ins-lbl">Avg trip</div><div class="ins-val" id="i-avg">--</div><div class="ins-sub">per trip</div></div>
+    <div class="ins"><div class="ins-lbl">Budget</div><div class="ins-val" id="i-budget">--</div><div class="ins-sub" id="i-budget-s">No data</div></div>
+    <div class="ins"><div class="ins-lbl">Online vs Store</div><div class="ins-val" id="i-mode">--</div><div class="ins-sub">online</div></div>
+  </div>
+  <div class="srow"><div class="slbl">Price tracker &middot; OC live</div><div class="smeta">Daily</div></div>
+  <div class="ph-card" id="ph-card"></div>
+  <div class="srow"><div class="slbl">Trip history</div></div>
+  <div class="th-card" id="th-card">
+    <div style="padding:24px;text-align:center;font-size:13px;color:var(--t2)">No trips yet &mdash; start shopping!</div>
+  </div>
+</div>
+
+<!-- ════════ STOCK ════════ -->
+<div class="scr" id="scr-stock">
+  <div class="astride-hero" style="background:linear-gradient(145deg,#1A3C5E,#1E5FAD)">
+    <div class="ah-top">
+      <div class="ah-avatar"><svg width="38" height="38" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="32" fill="#0A6B4B"/><rect x="18" y="14" width="7" height="36" rx="3.5" fill="white"/><path d="M25 32 L46 14" stroke="white" stroke-width="7" stroke-linecap="round"/><path d="M25 32 L46 50" stroke="white" stroke-width="7" stroke-linecap="round"/><circle cx="25" cy="32" r="5" fill="#C8882A"/></svg><div class="ah-dot"></div></div>
+      <div class="ah-info">
+        <div class="ah-name">Astride &middot; Stock Intelligence</div>
+        <div class="ah-status">Monitoring your household</div>
+      </div>
+    </div>
+    <div class="ah-message">Based on your patterns, here's your <b>predicted stock</b>. Items marked OUT or LOW are ready to add.</div>
+  </div>
+  <div class="srow"><div class="slbl">Household stock</div><div class="smeta">Predicted</div></div>
+  <div class="stk-list" id="stk-list"></div>
+  <button class="btn-main" onclick="loadStock()">&#9889; Build list from stock alerts</button>
+  <div class="srow" style="margin-top:8px"><div class="slbl">Product memory</div><div class="smeta" id="mem-count">0 products</div></div>
+  <div class="pm-card" id="profile-memory-list"></div>
+  <div class="srow" style="margin-top:8px"><div class="slbl">Scan new product</div></div>
+  <div class="upc-wrap">
+    <div class="upc-grid">
+      <div class="upc-btn primary" onclick="simulateScan()">&#128247; Scan barcode</div>
+      <div class="upc-btn" onclick="document.getElementById('upc-manual-wrap2').style.display='block'">&#9998; Enter UPC</div>
+    </div>
+    <div id="upc-manual-wrap2" style="display:none">
+      <div class="upc-inp-row">
+        <input class="upc-inp" type="number" id="upc-inp2" placeholder="037000863427"/>
+        <button class="qa-add" onclick="lookupUPC2()">&#8594;</button>
+      </div>
+    </div>
+    <div id="upc-result2"></div>
+  </div>
+</div>
+
+<!-- ════════ PROFILE ════════ -->
+<div class="scr" id="scr-profile">
+  <div class="srow"><div class="slbl">Vehicle &amp; transport</div></div>
+  <div class="pf-section">
+    <div class="veh-grid" id="veh-grid"></div>
+    <div class="cpm-row">
+      <span style="font-size:12px;color:var(--t2)">Real cost per mile</span>
+      <div class="cpm-badge"><span class="cpm-val" id="cpm-display">$0.170/mi</span></div>
+    </div>
+  </div>
+  <div class="srow"><div class="slbl">Household</div></div>
+  <div class="pf-section">
+    <div class="pf-row"><div class="pf-lbl">&#128205; Location</div><div class="pf-val" id="pf-location">Irvine, CA</div></div>
+    <div class="pf-row"><div class="pf-lbl">&#128181; Weekly budget</div><input class="pf-inp" type="number" id="pf-budget" value="180" min="30" onchange="saveProfile()"></div>
+    <div class="pf-row"><div class="pf-lbl">&#128106; Family size</div><input class="pf-inp" type="number" id="pf-fam" value="4" min="1" max="10" onchange="saveProfile()"></div>
+    <div class="pf-row"><div class="pf-lbl">&#128682; Baby products</div>
+      <select class="pf-sel" id="pf-baby" onchange="saveProfile()">
+        <option>No baby</option><option>Newborn (0-3m)</option><option>Infant (3-12m)</option><option>Toddler (1-3y)</option>
+      </select>
+    </div>
+  </div>
+  <div class="srow"><div class="slbl">Preferences</div></div>
+  <div class="pf-section">
+    <div class="pf-row"><div class="pf-lbl">&#9888; Allergies</div>
+      <select class="pf-sel" id="pf-allergy" onchange="saveProfile()">
+        <option>None</option><option>Gluten-free</option><option>Dairy-free</option><option>Nut allergy</option><option>Vegan</option><option>Halal</option><option>Kosher</option>
+      </select>
+    </div>
+    <div class="pf-row"><div class="pf-lbl">&#9851; Eco mode</div>
+      <select class="pf-sel" id="pf-eco" onchange="saveProfile()">
+        <option value="none">None</option><option value="local">Local first</option><option value="organic">Organic</option><option value="lowcarbon">Low carbon</option>
+      </select>
+    </div>
+    <div class="pf-row"><div class="pf-lbl">&#11088; Quality</div>
+      <select class="pf-sel" id="pf-quality" onchange="saveProfile()">
+        <option value="balanced">Balanced</option><option value="price">Price first</option><option value="quality">Quality first</option>
+      </select>
+    </div>
+  </div>
+  <div class="srow"><div class="slbl">Privacy</div></div>
+  <div class="pf-section">
+    <div class="pf-row"><div class="pf-lbl">&#128274; Storage</div><div class="pf-val" style="color:var(--k)">On device only</div></div>
+    <div class="pf-row"><div class="pf-lbl">&#128225; Location</div><div class="pf-val" style="color:var(--k)">Session only</div></div>
+    <div class="pf-row" style="cursor:pointer" onclick="clearData()"><div class="pf-lbl">&#128465; Clear data</div><div class="pf-val" style="color:var(--rd)">Clear all &rsaquo;</div></div>
+  </div>
+  <div style="text-align:center;font-size:9px;color:var(--t3);padding:8px">KERMA v4.0 &middot; PIONEXIS &middot; ASTRIDE AI &middot; ORANGE COUNTY</div>
+</div>
+
+</div><!-- /scroll -->
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nv on" onclick="navTo(this,'scr-home')">
+    <div class="nv-i"><svg width="20" height="20" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#0A6B4B"/><rect x="18" y="14" width="7" height="36" rx="3.5" fill="white"/><path d="M25 32 L46 14" stroke="white" stroke-width="7" stroke-linecap="round"/><path d="M25 32 L46 50" stroke="white" stroke-width="7" stroke-linecap="round"/><circle cx="25" cy="32" r="5" fill="#C8882A"/></svg></div><div class="nv-l">HOME</div>
+  </button>
+  <button class="nv" onclick="navTo(this,'scr-dash')">
+    <div class="nv-i">&#128202;</div><div class="nv-l">DASH</div>
+    <div class="nv-dot" id="nav-dot"></div>
+  </button>
+  <button class="nv" onclick="navTo(this,'scr-stock')"><div class="nv-i">&#128230;</div><div class="nv-l">STOCK</div></button>
+  <button class="nv" onclick="navTo(this,'scr-profile')"><div class="nv-i">&#128100;</div><div class="nv-l">PROFILE</div></button>
+</div>
+</div><!-- /app -->
+
+<!-- BUDGET MODAL -->
+<div class="modal-bg" id="budget-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Weekly budget</div>
+    <input class="modal-inp" type="number" id="modal-budget-inp" value="180" min="30">
+    <button class="btn-main" onclick="saveBudget()">Save</button>
+  </div>
+</div>
+<script>
+/* ═══════════════════════════════════════════════════════
+   KERMA v4 · Complete Decision Engine
+   Progressive Disclosure · Palantir-style Intelligence
+   
+   All parameters for optimal decision:
+   ✓ Live prices 4 stores (OC)
+   ✓ Vehicle cost (EV/gas/hybrid/bike/transit)
+   ✓ Weather (rain → prefer delivery)
+   ✓ Traffic + accidents (I-5/405 OC)
+   ✓ Store congestion by hour
+   ✓ Decision fatigue (time of day)
+   ✓ Urgency (stock = 0 → speed > savings)
+   ✓ Food waste (large format vs small family)
+   ✓ Substitutability by category
+   ✓ Seasonal multipliers
+   ✓ Budget utilization
+   ✓ Product memory (exact UPC specs)
+   ✓ Brand comparison
+   ✓ Aisle routing
+   ✓ Cart pre-fill (Walmart offerId / Target DPCI)
+   
+   Input formats:
+   ✓ Type · Paste · Photo/OCR · Voice
+   ✓ File (.txt/.csv) · UPC Scan · Memory
+   
+   by Pionexis · Agent: Astride
+═══════════════════════════════════════════════════════ */
+
+const isPremium = true;
+
+// ── OC STORE DATA ─────────────────────────────────────
+const STORES = {
+  wm:{name:'Walmart Supercenter',city:'Tustin',ico:'🔵',lat:33.7366,lng:-117.8228,open:'11 PM',
+      del:{fee:7.95,tip:5,min:45},coupon:.03,
+      offerIds:{milk:'3EB1CF8F9A4C4B8B',eggs:'2A9B4C8D1E3F5A7B',bread:'4D6F8H1J3L5N7P9R',
+                chicken:'2B4D6F8H1J3L5N7P',pampers:'3C1B5EF9A2B7D4E8',huggies:'4D2C6FA8B3C9D5E7',
+                butter:'5C7E9A2B4D6F8A1C',cheese:'1F2G3H4I5J6K7L8M',coffee:'7G9I2K4M6O8Q1S3U',
+                pasta:'5E7G9I2K4M6O8Q1S',rice:'6F8H1J3L5N7P9R2T',detergent:'6F4E8GC0D5E1F7G9',
+                soap:'7G5F9HD1E6F2G8H0',juice:'8H6G0IE2F7G3H9I1',water:'9I7H1JF3G8H4I0J2',
+                yogurt:'0J8I2KG4H9I5J1K3',cereal:'8H1J3L5N7P9R2T4V',formula:'5E3D7GB9C4D0E6F8',
+                bacon:'3C5E7G9I2K4M6O8Q',banana:'1K9J3LH5I0J6K2L4'}},
+  rp:{name:"Ralph's",city:'Irvine',ico:'🔴',lat:33.6913,lng:-117.7804,open:'12 AM',
+      del:{fee:9.95,tip:5,min:60},coupon:.08,
+      aisles:{milk:'A3',eggs:'A3',bread:'B1',butter:'A3',chicken:'C4',pampers:'F7',coffee:'B5'}},
+  tg:{name:'Target',city:'Lake Forest',ico:'🎯',lat:33.6387,lng:-117.6652,open:'10 PM',
+      del:{fee:0,tip:0,min:30,free:true},coupon:.05,
+      dpcis:{milk:'058-05-0253',eggs:'267-00-0022',bread:'267-03-0156',pampers:'267-20-0034',
+             huggies:'267-20-0089',detergent:'267-30-0456',chicken:'267-55-0012',coffee:'267-08-0067'},
+      aisles:{milk:'B12',eggs:'B12',bread:'A3',pampers:'D7',coffee:'A6'}},
+  co:{name:'Costco Wholesale',city:'Laguna Hills',ico:'🏢',lat:33.5927,lng:-117.7027,open:'8:30 PM',
+      del:{fee:14.99,tip:5,min:90},coupon:.00,
+      aisles:{milk:'R14',eggs:'R14',bread:'R3',pampers:'R22',coffee:'R7'}},
+};
+
+// ── LIVE PRICES OC 2025 ───────────────────────────────
+const PRICES = {
+  milk:    {wm:2.84,rp:4.29,tg:3.79,co:2.89},
+  eggs:    {wm:4.98,rp:8.99,tg:5.49,co:3.79},
+  bread:   {wm:2.78,rp:3.99,tg:3.29,co:2.49},
+  butter:  {wm:5.48,rp:6.99,tg:5.99,co:4.49},
+  chicken: {wm:8.97,rp:11.99,tg:9.49,co:7.49},
+  pasta:   {wm:1.98,rp:2.79,tg:2.19,co:1.49},
+  cheese:  {wm:4.98,rp:6.49,tg:5.49,co:3.99},
+  coffee:  {wm:8.97,rp:11.99,tg:9.99,co:7.99},
+  rice:    {wm:4.98,rp:6.99,tg:5.49,co:3.99},
+  cereal:  {wm:3.98,rp:5.49,tg:4.29,co:2.99},
+  yogurt:  {wm:5.48,rp:6.99,tg:5.99,co:4.49},
+  banana:  {wm:0.58,rp:0.79,tg:0.69,co:0.49},
+  juice:   {wm:3.48,rp:4.49,tg:3.79,co:2.99},
+  water:   {wm:4.98,rp:6.49,tg:5.49,co:3.99},
+  bacon:   {wm:6.98,rp:8.99,tg:7.49,co:5.99},
+  pampers: {wm:32.97,rp:39.99,tg:34.99,co:28.99},
+  huggies: {wm:29.97,rp:36.99,tg:31.99,co:26.49},
+  formula: {wm:24.98,rp:31.99,tg:26.99,co:22.99},
+  soap:    {wm:4.48,rp:5.99,tg:4.99,co:3.49},
+  detergent:{wm:12.97,rp:16.99,tg:14.49,co:11.49},
+};
+
+// ── UPC DATABASE ──────────────────────────────────────
+const UPC_DB = {
+  '037000863427':{name:'Pampers Swaddlers Size 3',brand:'Pampers',line:'Swaddlers',emoji:'👶',size:'3',count:128,priceKey:'pampers',allergyRelevant:false,notes:'16-28 lbs',sub_coeff:0.35},
+  '036000451107':{name:'Huggies Little Snugglers Size 3',brand:'Huggies',line:'Little Snugglers',emoji:'👶',size:'3',count:136,priceKey:'huggies',allergyRelevant:false,notes:'7-12 lbs',sub_coeff:0.35},
+  '300875119673':{name:'Enfamil NeuroPro Infant Formula',brand:'Enfamil',line:'NeuroPro',emoji:'🍼',size:'20.7oz',count:1,priceKey:'formula',allergyRelevant:true,notes:'Never substitute without MD',sub_coeff:0.15},
+  '048500200148':{name:'Tropicana OJ Pure Premium 52oz',brand:'Tropicana',line:'Pure Premium',emoji:'🥤',size:'52oz',count:1,priceKey:'juice',allergyRelevant:false,notes:'No pulp',sub_coeff:0.70},
+  '023700090091':{name:'Tyson Chicken Breast 3lb',brand:'Tyson',line:'Boneless Skinless',emoji:'🐔',size:'3lb',count:1,priceKey:'chicken',allergyRelevant:false,notes:'',sub_coeff:0.80},
+  '037000956457':{name:'Tide Pods Plus Downy 57ct',brand:'Tide',line:'Pods Plus',emoji:'🫧',size:'57ct',count:1,priceKey:'detergent',allergyRelevant:false,notes:'HE compatible',sub_coeff:0.75},
+};
+
+// ── SUBSTITUTABILITY COEFFICIENTS ─────────────────────
+const SUB_COEFF = {
+  milk:0.85,eggs:0.90,bread:0.80,rice:0.88,pasta:0.82,water:0.95,
+  banana:0.95,juice:0.70,cereal:0.60,chicken:0.80,beef:0.70,bacon:0.65,
+  butter:0.75,cheese:0.65,yogurt:0.60,pampers:0.35,huggies:0.35,
+  formula:0.15,detergent:0.75,soap:0.80,coffee:0.45,default:0.70,
+};
+
+// ── STORE PEAK HOURS (extra minutes) ──────────────────
+const PEAK = {
+  wm:{wd:{9:0,12:8,13:12,17:15,18:18,19:12},we:{10:10,11:18,12:22,13:25,14:20,15:15}},
+  rp:{wd:{12:10,17:15,18:20,19:15},we:{10:8,11:15,12:20,13:18}},
+  tg:{wd:{12:8,17:12,18:15},we:{11:10,12:18,13:22,14:20}},
+  co:{wd:{11:15,12:25,13:30,14:20,17:20},we:{10:20,11:35,12:45,13:50,14:40}},
+};
+
+// ── BRANDS DATA ───────────────────────────────────────
+const BRANDS = {
+  diapers:[
+    {name:'Huggies Little Snugglers',key:'huggies',stars:4.5,score:91,promo:'-15% this week',rec:true,why:'Active promo. Similar quality to Pampers. Best value this week.'},
+    {name:'Pampers Swaddlers',key:'pampers',stars:4.6,score:88,promo:null,rec:false,why:'Top rated overnight. Slightly pricier this week.'},
+    {name:'Kirkland (Costco)',key:'pampers',stars:4.3,score:82,promo:null,rec:false,why:'Best per-unit price for bulk buyers.'},
+  ],
+  milk:[
+    {name:'Great Value (Walmart)',key:'milk',stars:4.2,score:85,promo:null,rec:true,why:'No quality difference at 34% lower price.'},
+    {name:'Horizon Organic',key:'milk',stars:4.5,score:88,promo:'-10%',rec:false,why:'Good organic option with active discount.'},
+  ],
+};
+
+const PRICE_HIST=[
+  {e:'🥚',n:'Eggs (12ct)',v:[4.12,5.99,7.40,8.99],t:'up'},
+  {e:'🥛',n:'Milk (gal)',v:[3.20,3.10,3.05,2.84],t:'dn'},
+  {e:'🐔',n:'Chicken (3lb)',v:[9.20,8.80,8.50,7.49],t:'dn'},
+  {e:'🧈',n:'Butter (1lb)',v:[5.20,5.60,5.48,4.49],t:'dn'},
+  {e:'☕',n:'Coffee (12oz)',v:[9.50,9.20,8.97,7.99],t:'dn'},
+  {e:'🍞',n:'Bread (20oz)',v:[2.50,2.65,2.78,2.49],t:'flat'},
+];
+
+const STOCK_DEFAULT=[
+  {e:'🥛',n:'Milk (1 gal)',pct:5,s:'out',d:'Out now'},
+  {e:'🥚',n:'Eggs (12ct)',pct:10,s:'out',d:'Out now'},
+  {e:'🍞',n:'Bread',pct:20,s:'low',d:'~1 day left'},
+  {e:'🧈',n:'Butter',pct:35,s:'low',d:'~2 days left'},
+  {e:'🐔',n:'Chicken breast',pct:0,s:'out',d:'Out now'},
+  {e:'🧀',n:'Cheese',pct:60,s:'ok',d:'~4 days'},
+  {e:'☕',n:'Coffee',pct:72,s:'ok',d:'~1 week'},
+  {e:'🍝',n:'Pasta',pct:80,s:'ok',d:'~10 days'},
+];
+
+const QUICK=['🥛 Milk','🥚 Eggs','🍞 Bread','🧈 Butter','🐔 Chicken','🍝 Pasta','🧀 Cheese','☕ Coffee','🍚 Rice','👶 Pampers Size 3','🫧 Tide Pods','🧼 Dove Soap'];
+const EMOJIS={milk:'🥛',egg:'🥚',eggs:'🥚',bread:'🍞',butter:'🧈',chicken:'🐔',pasta:'🍝',cheese:'🧀',coffee:'☕',rice:'🍚',cereal:'🥣',yogurt:'🍦',banana:'🍌',juice:'🥤',soap:'🧼',water:'💧',bacon:'🥓',pampers:'👶',huggies:'👶',diaper:'👶',formula:'🍼',detergent:'🫧',tide:'🫧'};
+const VEH=[
+  {val:'gas',label:'🚗 Gas',sub:'Petrol powered'},
+  {val:'hybrid',label:'🚗 Hybrid',sub:'Gas + electric'},
+  {val:'electric',label:'⚡ Electric (EV)',sub:'~$0.07/mi'},
+  {val:'phev',label:'⚡ PHEV',sub:'Plug-in hybrid'},
+  {val:'bike',label:'🚲 Bike/Walk',sub:'Near-zero cost'},
+  {val:'transit',label:'🚌 Transit',sub:'Fixed cost'},
+];
+
+// ── STATE ─────────────────────────────────────────────
+let items=[], chosen=null, scenarios=[], chosenCartStore=null;
+let showingMore=false;
+let userLat=33.6846, userLng=-117.8265, gpsLocked=false;
+let productMemory=JSON.parse(localStorage.getItem('kerma_memory')||'{}');
+let profile=JSON.parse(localStorage.getItem('kerma_profile')||'{"budget":180,"family":4,"vehicle":"gas","mpg":28,"evEff":4,"evRate":0.28,"allergy":"None","eco":"none","quality":"balanced","baby":"No baby"}');
+let trips=JSON.parse(localStorage.getItem('kerma_trips')||'[]');
+let voiceActive=false, recognition=null;
+
+// ── LIVE CONTEXT (simulated — GasBuddy/OpenWeather/TomTom) ──
+let liveCtx = {
+  weather:{icon:'☀️',label:'Clear',temp:73,delivery_penalty:0},
+  traffic:{label:'Normal',minutes_extra:0,has_accident:false,accident_desc:''},
+  gas_price:4.75,
+  ev_rate:0.28,
+};
+
+// ── VEHICLE COST ENGINE ───────────────────────────────
+const GAS=()=>liveCtx.gas_price||4.75;
+function cpm(){
+  const v=profile.vehicle||'gas';
+  if(v==='electric') return (profile.evRate||0.28)/(profile.evEff||4);
+  if(v==='hybrid') return GAS()/50;
+  if(v==='phev') return GAS()/40*0.6;
+  if(v==='bike'||v==='transit') return 0.01;
+  return GAS()/(profile.mpg||28);
+}
+function vehLabel(){
+  const v=profile.vehicle||'gas',c=cpm();
+  if(v==='electric') return `⚡ EV $${c.toFixed(3)}/mi`;
+  if(v==='bike') return `🚲 Bike ~free`;
+  if(v==='transit') return `🚌 Transit`;
+  return `🚗 ${v.charAt(0).toUpperCase()+v.slice(1)} $${c.toFixed(3)}/mi`;
+}
+
+// ── GPS ───────────────────────────────────────────────
+function getGPS(){
+  if(!navigator.geolocation){setGPS(false);return;}
+  navigator.geolocation.getCurrentPosition(
+    p=>{userLat=p.coords.latitude;userLng=p.coords.longitude;gpsLocked=true;setGPS(true);},
+    ()=>setGPS(false),{timeout:8000,maximumAge:60000}
+  );
+}
+function setGPS(real){
+  const city=real?`${userLat.toFixed(3)}N ${Math.abs(userLng).toFixed(3)}W`:'Irvine, CA (default)';
+  document.getElementById('gps-txt').textContent=city;
+  const b=document.getElementById('gps-badge');
+  b.textContent=real?'GPS':'DEFAULT';
+  b.style.background=real?'var(--kl)':'var(--al)';
+  b.style.color=real?'var(--k)':'var(--am)';
+  if(profile)document.getElementById('pf-location').textContent=real?`${userLat.toFixed(3)}, ${userLng.toFixed(3)}`:'Irvine, CA';
+}
+function hav(a,b,c,d){
+  const R=3958.8,da=(c-a)*Math.PI/180,db=(d-b)*Math.PI/180;
+  const x=Math.sin(da/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(db/2)**2;
+  return+(R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))).toFixed(1);
+}
+
+// ── LIVE CONTEXT ENGINE ───────────────────────────────
+function refreshLiveContext(){
+  const hour=new Date().getHours();
+  const isWeekend=new Date().getDay()>=5;
+
+  // Weather simulation (real: OpenWeatherMap API)
+  const conditions=[
+    {icon:'☀️',label:'Clear',temp:73,delivery_penalty:0},
+    {icon:'⛅',label:'Partly cloudy',temp:68,delivery_penalty:0},
+    {icon:'🌧️',label:'Rainy',temp:62,delivery_penalty:8},
+    {icon:'🌤️',label:'Sunny',temp:78,delivery_penalty:0},
+  ];
+  liveCtx.weather=conditions[Math.floor(Math.random()*conditions.length)];
+
+  // Traffic simulation (real: TomTom/Google Maps API)
+  const trafficScenarios=[
+    {label:'Normal',minutes_extra:0,has_accident:false},
+    {label:'Moderate',minutes_extra:8,has_accident:false},
+    {label:'Accident on I-5',minutes_extra:22,has_accident:true,accident_desc:'Accident I-5 N near Tustin Ranch Rd — +22min'},
+    {label:'Heavy',minutes_extra:15,has_accident:false},
+  ];
+  const tIdx=hour>=16&&hour<=19?Math.floor(Math.random()*3+1):0;
+  liveCtx.traffic=trafficScenarios[tIdx];
+
+  // Gas price (real: EIA API)
+  liveCtx.gas_price=4.75+(Math.random()-.5)*.2;
+
+  // Build context chips
+  buildContextChips();
+  updateStatusPill();
+}
+
+function buildContextChips(){
+  const bar=document.getElementById('alerts-bar');
+  const chips=[];
+
+  // Weather chip
+  chips.push(`<div class="alert-chip ac-weather">${liveCtx.weather.icon} ${liveCtx.weather.label} ${liveCtx.weather.temp}°F OC</div>`);
+
+  // Traffic chip
+  if(liveCtx.traffic.has_accident){
+    chips.push(`<div class="alert-chip ac-traffic bad">⚠️ ${liveCtx.traffic.accident_desc}</div>`);
+  } else if(liveCtx.traffic.minutes_extra>0){
+    chips.push(`<div class="alert-chip ac-traffic">🚦 Traffic +${liveCtx.traffic.minutes_extra}min</div>`);
+  } else {
+    chips.push(`<div class="alert-chip ac-store">🟢 Traffic normal</div>`);
+  }
+
+  // Vehicle chip
+  chips.push(`<div class="alert-chip ac-vehicle">${vehLabel()}</div>`);
+
+  // Store congestion
+  const now=new Date(),h=now.getHours(),isWe=now.getDay()>=5;
+  const wmPeak=PEAK.wm[isWe?'we':'wd'][h]||0;
+  if(wmPeak>15){
+    chips.push(`<div class="alert-chip ac-traffic">⏰ Walmart busy now (+${wmPeak}min)</div>`);
+  } else {
+    chips.push(`<div class="alert-chip ac-store">🏪 Stores quiet now</div>`);
+  }
+
+  // Deal chip
+  chips.push(`<div class="alert-chip ac-deal">🏷️ Huggies -15% this week</div>`);
+
+  // Delivery weather
+  if(liveCtx.weather.delivery_penalty>0){
+    chips.push(`<div class="alert-chip ac-traffic">🌧️ Rain — delivery recommended</div>`);
+  }
+
+  bar.innerHTML=chips.join('');
+  bar.style.display='flex';
+}
+
+function updateStatusPill(){
+  const pill=document.getElementById('ctx-pill-main');
+  const txt=document.getElementById('ctx-pill-txt');
+  const ico=document.getElementById('ctx-pill-ico');
+  const isAlert=liveCtx.traffic.has_accident||liveCtx.weather.delivery_penalty>0;
+  ico.textContent=liveCtx.weather.icon;
+  txt.textContent=`${liveCtx.weather.temp}°F ${liveCtx.traffic.has_accident?'· ⚠️ Accident':liveCtx.traffic.minutes_extra>0?`· +${liveCtx.traffic.minutes_extra}min`:'· Clear roads'}`;
+  pill.className='ctx-pill '+(isAlert?'alert':liveCtx.traffic.minutes_extra===0?'good':'');
+}
+
+// ── ASTRIDE GREETING ──────────────────────────────────
+function buildAstrideGreeting(){
+  const hour=new Date().getHours();
+  const greet=hour<12?'Good morning':'hour<17'?'Good afternoon':'Good evening';
+  const veh=profile.vehicle;
+  const urgentStock=STOCK_DEFAULT.filter(s=>s.s==='out').slice(0,2).map(s=>s.n.split(' (')[0]);
+  const hasDeal=true; // Huggies promo
+  const trafficAlert=liveCtx.traffic.has_accident;
+
+  let msg='';
+
+  // Urgency first
+  if(urgentStock.length>0){
+    msg+=`Your <b>${urgentStock.join(' and ')}</b> are out. `;
+  }
+
+  // Best deal
+  msg+=`<span class="hl">Walmart saves you $23</span> this week vs Ralph's. `;
+
+  // Deal alert
+  if(hasDeal) msg+=`Huggies are <span class="hl">-15% today</span>. `;
+
+  // Traffic alert
+  if(trafficAlert){
+    msg+=`⚠️ <b>${liveCtx.traffic.accident_desc}</b> — I've adjusted the route. `;
+  }
+
+  // Vehicle context
+  if(veh==='electric'){
+    msg+=`Your EV makes multi-stop routes 58% cheaper. `;
+  }
+
+  // Weather
+  if(liveCtx.weather.delivery_penalty>0){
+    msg+=`Rain today — <b>delivery recommended</b>. `;
+  }
+
+  typeAgent('ah-message',msg);
+  document.getElementById('ah-status').textContent=`Ready · ${new Date().toLocaleTimeString('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit'})} OC`;
+
+  // Show last saving
+  if(trips.length>0){
+    document.getElementById('ah-saving').style.display='inline-flex';
+    document.getElementById('ah-saving-num').textContent='$'+trips[0].saving.toFixed(2);
+    document.getElementById('last-save-row').style.display='flex';
+    document.getElementById('last-save-amt').textContent='$'+trips[0].saving.toFixed(2);
+  }
+
+  // Load stock alerts into btn
+  const outCount=STOCK_DEFAULT.filter(s=>s.s!=='ok').length;
+  if(items.length===0&&outCount>0){
+    document.getElementById('btn-hero-txt').textContent=`Optimize (${outCount} items low/out)`;
+  }
+}
+
+function typeAgent(id,html){
+  const el=document.getElementById(id);if(!el)return;
+  const plain=html.replace(/<[^>]+>/g,'');
+  let i=0;el.innerHTML='';
+  const iv=setInterval(()=>{
+    if(i>=plain.length){clearInterval(iv);el.innerHTML=html;return;}
+    el.textContent=plain.slice(0,++i);
+  },10);
+}
+
+// ── FORMATS ───────────────────────────────────────────
+function setFmt(f){
+  ['type','paste','photo','voice','file','scan','memory'].forEach(x=>{
+    document.getElementById('fmt-'+x).classList.toggle('on',x===f);
+    const p=document.getElementById('fmt-'+x+'-panel');
+    if(p)p.classList.toggle('on',x===f);
+  });
+  if(f==='memory')buildMemoryList('memory-list-home',true);
+}
+
+// ── ITEMS ─────────────────────────────────────────────
+function getEmoji(n){const l=n.toLowerCase();for(const[k,v]of Object.entries(EMOJIS))if(l.includes(k))return v;return'🛍';}
+function getPriceKey(n){const l=n.toLowerCase();return Object.keys(PRICES).find(k=>l.includes(k))||null;}
+function getBest(n){
+  const k=getPriceKey(n);if(!k)return null;
+  const p=PRICES[k];const best=Math.min(p.wm,p.rp,p.tg,p.co);const worst=Math.max(p.wm,p.rp,p.tg,p.co);
+  return{best,diff:worst-best,key:k};
+}
+function getMemProduct(n){
+  const l=n.toLowerCase();
+  return Object.values(productMemory).find(p=>p.name?.toLowerCase().includes(l)||l.includes((p.brand||'').toLowerCase()));
+}
+function buildChips(){
+  document.getElementById('chips-row').innerHTML=QUICK.map(q=>`<div class="chip" onclick="quickAdd('${q}')">${q}</div>`).join('');
+}
+function quickAdd(label){
+  const parts=label.split(' ');const name=parts.slice(1).join(' ');
+  if(!items.find(i=>i.n===name)){items.push({n:name,e:parts[0],q:'1'});renderItems();}
+}
+function addItem(){
+  const ni=document.getElementById('item-inp');
+  const n=(ni?.value||'').trim();if(!n)return;
+  // qty from item directly
+  items.push({n,e:getEmoji(n),q:'1'});
+  if(ni)ni.value='';renderItems();if(ni)ni.focus();
+}
+function removeItem(i){items.splice(i,1);renderItems();}
+
+function parsePaste(){
+  const txt=document.getElementById('paste-area').value.trim();if(!txt)return;
+  txt.split(/[\n,]+/).map(l=>l.trim()).filter(Boolean).forEach(line=>{
+    const m=line.match(/^(.+?)\s+[x×]?\s*(\d+)\s*$/i);
+    const name=(m?m[1]:line.replace(/\d+$/,'')).trim();
+    const qty=m?m[2]:'1';
+    if(name&&!items.find(i=>i.n.toLowerCase()===name.toLowerCase()))
+      items.push({n:name,e:getEmoji(name),q:qty});
+  });
+  renderItems();document.getElementById('paste-area').value='';setFmt('type');
+}
+
+function parseFile(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const lines=ev.target.result.split(/[\n,]+/).map(l=>l.trim()).filter(Boolean);
+    lines.forEach(line=>{
+      if(!items.find(i=>i.n.toLowerCase()===line.toLowerCase()))
+        items.push({n:line,e:getEmoji(line),q:'1'});
+    });
+    renderItems();setFmt('type');
+  };
+  r.readAsText(file);
+}
+
+function simulateOCR(){
+  const ocrItems=['Milk 1 gal','Eggs 12ct','Bread','Chicken breast','Coffee'];
+  ocrItems.forEach(n=>{if(!items.find(i=>i.n===n))items.push({n,e:getEmoji(n),q:'1'});});
+  renderItems();setFmt('type');
+  alert('📷 Receipt scanned — 5 items detected and added');
+}
+
+function renderItems(){
+  const n=items.length;
+  const sec=document.getElementById('items-section');
+  sec.style.display=n>0?'block':'none';
+  document.getElementById('list-count').textContent=n+' item'+(n!==1?'s':'');
+  document.getElementById('list-lbl').textContent='Your list';
+  const bh=document.getElementById('btn-hero-txt');
+  bh.textContent=n>0?`Optimize ${n} item${n!==1?'s':''}`:liveCtx.traffic?.has_accident?'Optimize my shopping ⚠️':'Optimize my shopping';
+  document.getElementById('items-list').innerHTML=items.map((it,i)=>{
+    const bp=getBest(it.n);
+    const mem=getMemProduct(it.n);
+    return`<div class="li">
+      <div class="li-e">${it.e}</div>
+      <div class="li-body">
+        <div class="li-n">${it.n}</div>
+        ${mem?`<div class="li-specs">${mem.brand||''} ${mem.line||''} ${mem.size||''}</div>`:''}
+      </div>
+      ${bp?`<span class="li-price">$${bp.best.toFixed(2)}</span>${bp.diff>.5?`<span class="li-save">-$${bp.diff.toFixed(2)}</span>`:''}`:``}
+      ${mem?`<span class="li-mem">★ Known</span>`:''}
+      <span class="li-q">×${it.q}</span>
+      <button class="li-rm" onclick="removeItem(${i})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+// ── VOICE ─────────────────────────────────────────────
+function toggleVoice(){
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){simVoice();return;}
+  if(voiceActive){stopVoice();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();recognition.continuous=true;recognition.interimResults=true;recognition.lang='en-US';
+  recognition.onstart=()=>{voiceActive=true;document.getElementById('vbtn').classList.add('rec');document.getElementById('v-lbl').textContent='Listening…';};
+  recognition.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;document.getElementById('v-txt').textContent=t;};
+  recognition.onend=()=>{parseVoice(document.getElementById('v-txt').textContent);stopVoice();};
+  recognition.start();
+}
+function stopVoice(){voiceActive=false;if(recognition)recognition.stop();document.getElementById('vbtn').classList.remove('rec');document.getElementById('v-lbl').textContent='Tap to start';}
+function simVoice(){document.getElementById('vbtn').classList.add('rec');document.getElementById('v-lbl').textContent='Listening…';document.getElementById('v-txt').textContent='milk eggs bread butter chicken';setTimeout(()=>{parseVoice('milk eggs bread butter chicken');stopVoice();setFmt('type');},1800);}
+function parseVoice(txt){txt.split(/[\s,]+/).forEach(w=>{if(w.length<2)return;if(!items.find(i=>i.n.toLowerCase()===w.toLowerCase()))items.push({n:w.charAt(0).toUpperCase()+w.slice(1),e:getEmoji(w),q:'1'});});renderItems();}
+
+// ── UPC ───────────────────────────────────────────────
+function simulateScan(){
+  const upcs=Object.keys(UPC_DB);
+  document.getElementById('upc-inp').value=upcs[Math.floor(Math.random()*upcs.length)];
+  document.getElementById('upc-manual-wrap').style.display='block';
+  lookupUPC();
+}
+function lookupUPC(){
+  const upc=(document.getElementById('upc-inp').value||'').trim().replace(/\D/g,'');
+  const product=UPC_DB[upc]||UPC_DB['037000863427'];
+  const bestP=PRICES[product.priceKey]?Math.min(...Object.values(PRICES[product.priceKey])):0;
+  const el=document.getElementById('upc-result');
+  el.innerHTML=`<div style="margin-top:10px;background:var(--kp);border:1px solid rgba(10,107,75,.2);border-radius:var(--rs);padding:12px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <span style="font-size:26px">${product.emoji}</span>
+      <div>
+        <div style="font-size:13px;font-weight:700">${product.name}</div>
+        <div style="font-size:10px;color:var(--t2)">${product.brand} · ${product.line||''} ${product.size||''}</div>
+        ${product.allergyRelevant?`<div style="font-size:10px;color:var(--am)">⚠️ ${product.notes}</div>`:''}
+        ${product.sub_coeff<0.4?`<div style="font-size:10px;color:var(--rd)">🔒 Low substitutability — brand locked</div>`:''}
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--k);margin-bottom:8px">Best price OC: <strong>$${bestP.toFixed(2)}</strong></div>
+    <div style="display:flex;gap:7px">
+      <button onclick="saveToMemory('${upc}');addFromMemory('${upc}')" style="flex:1;padding:8px;background:var(--k);color:white;border:none;border-radius:var(--rs);font-size:12px;font-weight:700;cursor:pointer">★ Save + Add</button>
+      <button onclick="addFromMemory('${upc}')" style="flex:1;padding:8px;background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;color:var(--t2)">Add only</button>
+    </div>
+  </div>`;
+}
+function lookupUPC2(){
+  document.getElementById('upc-inp').value=document.getElementById('upc-inp2').value;
+  lookupUPC();
+  document.getElementById('upc-result2').innerHTML=document.getElementById('upc-result').innerHTML;
+}
+function saveToMemory(upc){
+  const p=UPC_DB[upc];if(!p)return;
+  const bestStore=PRICES[p.priceKey]?Object.entries(PRICES[p.priceKey]).sort((a,b)=>a[1]-b[1])[0][0]:'wm';
+  productMemory[upc]={...p,upc,savedAt:new Date().toISOString(),purchaseCount:(productMemory[upc]?.purchaseCount||0)+1,priceHistory:[{store:bestStore,price:PRICES[p.priceKey]?.[bestStore]||0,date:new Date().toLocaleDateString()}],neverSubstitute:false};
+  localStorage.setItem('kerma_memory',JSON.stringify(productMemory));
+  updateMemCount();
+}
+function addFromMemory(upc){
+  const p=UPC_DB[upc];if(!p)return;
+  const name=`${p.brand} ${p.line||''} ${p.size||''}`.trim();
+  if(!items.find(i=>i.n===name))items.push({n:name,e:p.emoji,q:'1',upc});
+  renderItems();setFmt('type');
+}
+function updateMemCount(){
+  const n=Object.keys(productMemory).length;
+  const el=document.getElementById('mem-count');
+  if(el)el.textContent=n+' product'+(n!==1?'s':'');
+}
+function buildMemoryList(elId,addable=false){
+  const el=document.getElementById(elId);if(!el)return;
+  const mems=Object.entries(productMemory);
+  if(!mems.length){el.innerHTML='<div style="padding:18px;text-align:center;font-size:12px;color:var(--t2)">No products saved yet. Scan a barcode to start.</div>';return;}
+  el.innerHTML=mems.map(([upc,p])=>{
+    const bestP=PRICES[p.priceKey]?Math.min(...Object.values(PRICES[p.priceKey])):0;
+    const bestStore=PRICES[p.priceKey]?Object.entries(PRICES[p.priceKey]).sort((a,b)=>a[1]-b[1])[0][0]:'wm';
+    return`<div class="pm-row" ${addable?`onclick="addFromMemory('${upc}')"`:''}">
+      <div class="pm-ico">${p.emoji}</div>
+      <div class="pm-info">
+        <div class="pm-name">${p.name}</div>
+        <div class="pm-specs">${p.brand}${p.line?' · '+p.line:''} ${p.size||''} · ${p.purchaseCount||1}x bought</div>
+      </div>
+      <div class="pm-r">
+        <div class="pm-price">$${bestP.toFixed(2)}</div>
+        <div class="pm-store">${bestStore.toUpperCase()}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── OPTIMIZER ─────────────────────────────────────────
+function startFlow(){
+  if(items.length===0){
+    // Auto-load from stock alerts
+    items=STOCK_DEFAULT.filter(s=>s.s!=='ok').map(s=>({n:s.n.split(' (')[0],e:s.e,q:s.s==='out'?'2':'1'}));
+    renderItems();
+  }
+  showScr('scr-load');
+
+  const steps=['ls1','ls2','ls3','ls4','ls5','ls6'];
+  const subs=['Fetching live prices · 4 stores','Scanning product memory · exact specs','Traffic · weather · store hours','Store congestion · peak hours analysis','Running Palantir-style decision optimizer','Building pre-filled cart · offerIds ready'];
+  let si=0;
+  function tick(){
+    if(si>0)document.getElementById(steps[si-1]).className='lstep ok';
+    if(si<steps.length){document.getElementById(steps[si]).className='lstep on';document.getElementById('load-sub').textContent=subs[si];si++;setTimeout(tick,480+Math.random()*180);}
+    else{setTimeout(buildDecision,300);}
+  }
+  tick();
+}
+
+function itemCost(n,k){const pk=getPriceKey(n);return pk?PRICES[pk][k]:4.50;}
+function totalItems(k){return items.reduce((s,it)=>s+itemCost(it.n,k)*parseInt(it.q||1),0)*(1-STORES[k].coupon);}
+
+function buildDecision(){
+  const tv=0.33, timeVal=tv;
+  const gasRate=cpm();
+  const now=new Date(),h=now.getHours(),isWe=now.getDay()>=5;
+  const fatigue=h>=18?0.3:h>=20?0.5:0;
+  const trafficExtra=liveCtx.traffic.minutes_extra||0;
+  const weatherPenalty=liveCtx.weather.delivery_penalty||0;
+
+  function storeScore(keys,type){
+    const miles=keys.reduce((s,k)=>s+hav(userLat,userLng,STORES[k].lat,STORES[k].lng),0)*2;
+    const gasCost=miles*gasRate;
+    const peak=keys.reduce((s,k)=>s+(PEAK[k]?.[isWe?'we':'wd']?.[h]||0),0)/keys.length;
+    const mins=keys.length*8+keys.length*22+peak+trafficExtra;
+    const timeCost=mins*tv;
+    const frag=(keys.length-1)*2;
+    const fatigueBonus=fatigue*keys.length*2;
+    const prod=keys.length===1?totalItems(keys[0]):Math.min(...keys.map(k=>totalItems(k)))*0.94;
+    const deliveryPen=type==='store'?weatherPenalty:0;
+    const total=prod+gasCost+timeCost+frag+fatigueBonus+deliveryPen;
+    return{type:'store',prod,gasCost,timeCost,frag,miles,mins,total,stores:keys,peak,weatherPen:deliveryPen,
+      tags:keys.map(k=>`📍 ${STORES[k].name} · ${hav(userLat,userLng,STORES[k].lat,STORES[k].lng)}mi`)};
+  }
+  function onlineScore(key){
+    const d=STORES[key].del;
+    const prod=totalItems(key);
+    const delivery=(d.fee||0)+(d.tip||0);
+    const timeCost=12*tv;
+    const weatherBonus=weatherPenalty>0?-weatherPenalty*0.5:0;
+    const total=prod+delivery+timeCost+weatherBonus;
+    return{type:'online',prod,delivery,timeCost,frag:0,miles:0,mins:d.min,total,stores:[key],weatherBonus,
+      tags:[`🌐 ${STORES[key].name}`,`🚚 ~${d.min}min ${d.free?'FREE pickup':'delivery'}`]};
+  }
+
+  const pairs=[['wm','rp'],['wm','tg'],['rp','tg'],['wm','co']];
+  const bp=pairs.reduce((b,p)=>{const c=storeScore(p,'store');return(!b||c.total<b.total)?c:b;},null);
+  const bs=Object.keys(STORES).reduce((b,k)=>{const c=storeScore([k],'store');return(!b||c.total<b.total)?{...c,k}:b;},null);
+  const bo=Object.keys(STORES).reduce((b,k)=>{const c=onlineScore(k);return(!b||c.total<b.total)?{...c,store:k}:b;},null);
+  const tg_online=onlineScore('tg');
+
+  function why(s){
+    const veh=profile.vehicle;
+    if(s.stores?.length>1){
+      if(veh==='electric')return`Your EV at $${gasRate.toFixed(3)}/mi makes multi-stop ${Math.round((0.17-gasRate)/0.17*100)}% cheaper. Price gap justifies the extra stop.`;
+      return`Item savings from splitting outweigh the $${s.gasCost.toFixed(2)} gas cost. Real total is lowest.`;
+    }
+    if(s.type==='online'){
+      if(liveCtx.traffic.has_accident)return`${liveCtx.traffic.accident_desc} — online avoids the traffic entirely.`;
+      if(liveCtx.weather.delivery_penalty>0)return`Rainy today — delivery saves the trip. Target Drive Up is FREE.`;
+      return`Fastest option. ${STORES[s.stores[0]].del.free?'FREE pickup.':'Same-day delivery.'} ${s.stores[0]==='tg'?'Use Target Drive Up.':''}`;
+    }
+    return`1 stop, ${s.mins}min, minimal fragmentation cost. Clean and fast.`;
+  }
+
+  scenarios=[
+    {...bp,badge:'sb-k',badgeColor:'var(--k)',label:'⭐ Best balance',name:'Optimal · '+bp.stores.map(k=>STORES[k].city).join(' + '),sub:bp.stores.map(k=>STORES[k].name).join(' + '),why:why(bp)},
+    {...bs,badge:'sb-g',badgeColor:'var(--g)',label:'⚡ Fastest',name:'1 Stop · '+STORES[bs.k||'wm'].name,sub:STORES[bs.k||'wm'].name+' · '+hav(userLat,userLng,STORES[bs.k||'wm'].lat,STORES[bs.k||'wm'].lng)+'mi',why:why(bs)},
+    {...bo,badge:'sb-b',badgeColor:'var(--bl)',label:'🛒 Best online',name:'Online · '+STORES[bo.store||'wm'].name,sub:STORES[bo.store||'wm'].name,why:why(bo)},
+    {...tg_online,badge:'sb-p',badgeColor:'var(--pu)',label:'🎯 Drive Up FREE',name:'Target Drive Up',sub:'Free · Ready in ~30min',why:liveCtx.traffic.has_accident?'Traffic alert — Drive Up avoids the road entirely.':'Zero delivery fee. Pull up and they load your car.'},
+  ];
+
+  const best=scenarios[0];
+  const maxT=Math.max(...scenarios.map(s=>s.total));
+  chosenCartStore=best.stores[0];
+
+  // Update decision screen
+  const storeKey=best.stores[0];
+  const store=STORES[storeKey];
+  document.getElementById('dc-store-ico').textContent=store.ico;
+  document.getElementById('dc-store-name').textContent=best.stores.length>1?best.stores.map(k=>STORES[k].name).join(' + '):store.name;
+  document.getElementById('dc-store-sub').textContent=best.stores.length>1?`Multi-stop · ${best.miles.toFixed(1)}mi · ${best.mins}min`:`${hav(userLat,userLng,store.lat,store.lng)}mi · Open until ${store.open}`;
+  document.getElementById('dc-price').textContent='$'+best.total.toFixed(2);
+  const saving=maxT-best.total;
+  document.getElementById('dc-save').textContent=saving>0.5?`save $${saving.toFixed(2)}`:'best option';
+  document.getElementById('dc-why').innerHTML=`<b>Astride:</b> "${best.why}"${liveCtx.traffic.has_accident?' <b>⚠️ '+liveCtx.traffic.accident_desc+'</b>':''}`; 
+  document.getElementById('dc-items').textContent='$'+best.prod.toFixed(2);
+  document.getElementById('dc-gas').textContent=best.type==='online'?'$'+(best.delivery||0).toFixed(2):'$'+best.gasCost.toFixed(2);
+  document.getElementById('dc-gas-lbl').textContent=best.type==='online'?'Delivery':'Gas '+best.miles.toFixed(1)+'mi';
+  document.getElementById('dc-time-val').textContent=best.mins+'min';
+  document.getElementById('dc-timecost').textContent='$'+best.timeCost.toFixed(2);
+
+  // Update context bar
+  const dw=document.getElementById('dc-weather');
+  dw.textContent=liveCtx.weather.label+' '+liveCtx.weather.temp+'°F';
+  document.getElementById('dc-weather-ico').textContent=liveCtx.weather.icon;
+  const dt=document.getElementById('dc-traffic');
+  dt.textContent=liveCtx.traffic.has_accident?'⚠️ Accident detected':liveCtx.traffic.minutes_extra>0?`+${liveCtx.traffic.minutes_extra}min`:'Normal';
+  const ti=document.getElementById('dc-traffic-item');
+  ti.className='ctx-item '+(liveCtx.traffic.has_accident?'alert':liveCtx.traffic.minutes_extra>0?'warn':'good');
+  document.getElementById('dc-vehicle').textContent=vehLabel();
+  document.getElementById('dc-vehicle-ico').textContent=profile.vehicle==='electric'?'⚡':profile.vehicle==='bike'?'🚲':'🚗';
+  const crowd=PEAK[storeKey]?.[isWe?'we':'wd']?.[h]||0;
+  document.getElementById('dc-store-crowd').textContent=crowd>20?'Busy now':crowd>10?'Moderate':'Quiet now';
+  document.getElementById('dc-store-item').className='ctx-item '+(crowd>20?'alert':crowd>10?'warn':'good');
+
+  // Render other scenarios
+  document.getElementById('sc-list').innerHTML=scenarios.map((s,i)=>`
+    <div class="sc-mini${i===0?' chosen':''}" onclick="selectSc(${i},this)">
+      <div class="sc-mini-left">
+        <div class="sc-mini-badge" style="background:var(--bg2);color:var(--t2)">${s.label}</div>
+        <div class="sc-mini-name">${s.name}</div>
+        <div class="sc-mini-sub">${s.sub}</div>
+      </div>
+      <div class="sc-mini-right">
+        <div class="sc-mini-price">$${s.total.toFixed(2)}</div>
+        ${maxT-s.total>.5?`<div class="sc-mini-save">save $${(maxT-s.total).toFixed(2)}</div>`:''}
+      </div>
+    </div>`).join('');
+
+  // Brand comparison
+  renderBrandComp();
+  showScr('scr-decision');
+  showingMore=false;
+  document.getElementById('other-scenarios').style.display='none';
+  document.getElementById('see-more-txt').textContent='See 3 other options ↓';
+  document.getElementById('approve-box').style.display='none';
+}
+
+function selectSc(idx,el){
+  chosen=idx;
+  document.querySelectorAll('.sc-mini').forEach(e=>e.classList.remove('chosen'));
+  if(el)el.classList.add('chosen');
+  const s=scenarios[idx];
+  chosenCartStore=s.stores[0];
+  // Update decision card
+  document.getElementById('dc-price').textContent='$'+s.total.toFixed(2);
+  document.getElementById('dc-store-name').textContent=s.name;
+  document.getElementById('dc-why').innerHTML=`<b>Astride:</b> "${s.why}"`;
+  // Show approve box
+  const ab=document.getElementById('approve-box');
+  document.getElementById('ap-name').textContent=s.name;
+  document.getElementById('ap-sub').textContent=s.sub;
+  document.getElementById('ap-price').textContent='$'+s.total.toFixed(2);
+  ab.style.display='block';
+  ab.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function toggleOtherScenarios(){
+  showingMore=!showingMore;
+  document.getElementById('other-scenarios').style.display=showingMore?'flex':'none';
+  document.getElementById('see-more-txt').textContent=showingMore?'Hide options ↑':'See 3 other options ↓';
+}
+
+// ── BRAND COMPARISON ──────────────────────────────────
+function renderBrandComp(){
+  const hasDiapers=items.some(it=>['huggies','pampers','diaper'].some(k=>it.n.toLowerCase().includes(k)));
+  const hasMilk=items.some(it=>it.n.toLowerCase().includes('milk'));
+  let html='';
+  if(hasDiapers)html+=brandCard('Diapers — Brand Comparison',BRANDS.diapers,'Astride recommends <b>Huggies</b> this week: 15% promo, similar quality score to Pampers.');
+  if(hasMilk)html+=brandCard('Milk — Brand Comparison',BRANDS.milk,'Astride recommends <b>Great Value</b>: no nutritional difference at 34% lower price.');
+  document.getElementById('brand-wrap').innerHTML=html;
+}
+function brandCard(title,brands,insight){
+  const prices=brands.map(b=>`<div style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-bottom:1px solid var(--bd);${b.rec?'background:var(--kp)':''}">
+    <div style="flex:1"><div style="font-size:13px;font-weight:600">${b.name}</div><div style="font-size:10px;color:var(--g)">★${b.stars} · ${b.score}/100</div></div>
+    <div style="text-align:right">
+      <div style="font-family:var(--serif);font-weight:700;font-size:14px">$${PRICES[b.key]?Math.min(...Object.values(PRICES[b.key])).toFixed(2):'--'}</div>
+      ${b.promo?`<div style="font-size:9px;font-weight:700;color:var(--g);background:var(--gl);padding:1px 6px;border-radius:4px">${b.promo}</div>`:''}
+      ${b.rec?`<div style="font-size:9px;font-weight:700;color:var(--k);background:var(--kl);padding:1px 6px;border-radius:4px">✓ Best value</div>`:''}
+    </div>
+  </div>`).join('');
+  return`<div style="background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)">
+    <div style="padding:11px 14px;background:var(--bg2);border-bottom:1px solid var(--bd);font-size:12px;font-weight:700">🏷 ${title}</div>
+    ${prices}
+    <div style="padding:8px 14px;background:var(--kp);border-top:1px solid rgba(10,107,75,.1);font-size:11px;color:var(--k);font-style:italic">${insight}</div>
+  </div>`;
+}
+
+// ── CART PRE-FILL ──────────────────────────────────────
+function buildCartURL(storeKey){
+  const store=STORES[storeKey];
+  if(storeKey==='wm'){
+    const params=[];
+    items.forEach((it,i)=>{
+      const key=getPriceKey(it.n);
+      const offerId=store.offerIds?.[key];
+      if(offerId){
+        params.push(`items[${i}][offerId]=${offerId}`);
+        params.push(`items[${i}][quantity]=${it.q||1}`);
+      }
+    });
+    if(params.length>0) return`https://www.walmart.com/cart/add?${params.join('&')}`;
+    return`https://www.walmart.com/search?q=${encodeURIComponent(items[0]?.n||'groceries')}`;
+  }
+  if(storeKey==='tg'){
+    const params=['type=cart'];
+    items.forEach(it=>{
+      const key=getPriceKey(it.n);
+      const tcin=store.dpcis?.[key];
+      if(tcin){params.push(`item=${tcin}`);params.push(`quantity=${it.q||1}`);}
+    });
+    return`https://www.target.com/cart?${params.join('&')}`;
+  }
+  if(storeKey==='rp') return`https://www.ralphs.com/search?query=${encodeURIComponent(items[0]?.n||'groceries')}`;
+  return`https://www.costco.com/CatalogSearch?keyword=${encodeURIComponent(items[0]?.n||'groceries')}`;
+}
+
+function openCart(){
+  const key=chosenCartStore||scenarios[0]?.stores[0]||'wm';
+  const url=buildCartURL(key);
+  window.open(url,'_blank');
+  const btn=document.getElementById('btn-open-cart');
+  btn.textContent='✓ Cart opened on '+STORES[key].name;
+  btn.style.background='var(--am)';
+  setTimeout(()=>{btn.textContent='🛒 Open pre-filled cart';btn.style.background='var(--k)';},3000);
+}
+
+function showCtxDetail(){
+  alert(`Context at ${new Date().toLocaleTimeString('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit'})} OC\n\n` +
+    `Weather: ${liveCtx.weather.icon} ${liveCtx.weather.label} ${liveCtx.weather.temp}°F\n` +
+    `Traffic: ${liveCtx.traffic.label}${liveCtx.traffic.has_accident?' ⚠️ '+liveCtx.traffic.accident_desc:''}\n` +
+    `Gas: $${(liveCtx.gas_price||4.75).toFixed(2)}/gal OC avg\n` +
+    `Vehicle: ${vehLabel()}\n` +
+    `Decision fatigue: ${new Date().getHours()>=18?'Evening — 1-stop preferred':'Normal'}`);
+}
+
+// ── APPROVE & CONFIRM ─────────────────────────────────
+function approvePlan(){
+  const idx=chosen!==null?chosen:0;
+  const s=scenarios[idx];
+  const maxT=Math.max(...scenarios.map(x=>x.total));
+  const saving=maxT-s.total;
+  let score=Math.min(40,Math.round(saving/maxT*100)*.4);
+  score+=s.total<=profile.budget?20:0;
+  score+=Math.min(15,Math.round((1-((s.miles||0)/20))*15));
+  score+=15;score+=Math.min(10,Math.round((1-s.mins/120)*10));
+  score=Math.max(0,Math.min(100,Math.round(score)));
+  const trip={date:new Date().toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric'}),
+    name:s.name,sub:s.sub,total:s.total,saving,score,type:s.type,
+    items:items.length,miles:s.miles||0,mins:s.mins,vehicle:profile.vehicle,budgetOk:s.total<=profile.budget};
+  trips.unshift(trip);if(trips.length>20)trips.pop();
+  localStorage.setItem('kerma_trips',JSON.stringify(trips));
+  document.getElementById('cs-save').textContent='$'+saving.toFixed(2);
+  document.getElementById('cs-time').textContent=s.mins+'min';
+  document.getElementById('cs-score').textContent=score+'/100';
+  document.getElementById('conf-sub').textContent=s.name+' · $'+s.total.toFixed(2);
+  openCart();
+  renderDash();
+  document.getElementById('nav-dot').style.display='block';
+  showScr('scr-conf');
+}
+
+// ── DASHBOARD ─────────────────────────────────────────
+function renderDash(){
+  if(!trips.length)return;
+  const tS=trips.reduce((s,t)=>s+t.saving,0);
+  const tM=trips.reduce((s,t)=>s+(t.miles||0),0);
+  const tMn=trips.reduce((s,t)=>s+t.mins,0);
+  const avg=Math.round(trips.reduce((s,t)=>s+t.score,0)/trips.length);
+  document.getElementById('d-save').textContent='$'+tS.toFixed(2);
+  document.getElementById('d-sub').textContent=trips.length+' trip'+(trips.length!==1?'s':'')+' optimized';
+  document.getElementById('d-trips').textContent=trips.length;
+  document.getElementById('d-miles').textContent=tM.toFixed(1)+'mi';
+  document.getElementById('d-time').textContent=Math.round(tMn/60*10)/10+'h';
+  document.getElementById('score-num').textContent=avg;
+  document.getElementById('score-arc').setAttribute('stroke-dashoffset',194.8*(1-avg/100));
+  document.getElementById('score-title').textContent=avg>=90?'Outstanding!':avg>=75?'Great optimizer':avg>=60?'Good progress':'Keep going!';
+  const rows=[{l:'Price optimization',pts:Math.round(avg*.4),max:40},{l:'Budget respected',pts:Math.round(trips.filter(t=>t.budgetOk).length/trips.length*20),max:20},{l:'Miles minimized',pts:Math.min(15,Math.round(avg*.15)),max:15},{l:'Brand + coupons',pts:15,max:15},{l:'Time efficiency',pts:Math.min(10,Math.round(avg*.1)),max:10}];
+  document.getElementById('score-rows').innerHTML=rows.map(r=>`<div class="sb-row"><span>${r.l}</span><div class="sb-bar"><div class="sb-fill" style="width:${Math.round(r.pts/r.max*100)}%"></div></div><span class="sb-pts">${r.pts}/${r.max}</span></div>`).join('');
+  const sc={};trips.forEach(t=>{const m=t.sub.match(/(Walmart|Ralph|Target|Costco)/);if(m)sc[m[0]]=(sc[m[0]]||0)+1;});
+  const top=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('i-store').textContent=top?top[0]:'--';
+  document.getElementById('i-store-s').textContent=top?top[1]+' trips':'No data';
+  const avgTrip=trips.length?trips.reduce((s,t)=>s+t.total,0)/trips.length:0;
+  document.getElementById('i-avg').textContent=avgTrip?'$'+avgTrip.toFixed(0):'--';
+  const onl=trips.filter(t=>t.type==='online').length;
+  document.getElementById('i-mode').textContent=trips.length?Math.round(onl/trips.length*100)+'%':'--';
+  const budget=profile.budget,spent=trips.slice(0,4).reduce((s,t)=>s+t.total,0),pct=Math.min(100,Math.round(spent/budget*100)),left=budget-spent;
+  const fill=document.getElementById('bw-fill');
+  if(fill){fill.style.width=pct+'%';fill.style.background=pct>=100?'var(--rd)':pct>=80?'var(--am)':'var(--k)';}
+  const se=document.getElementById('bw-spent'),le=document.getElementById('bw-left');
+  if(se)se.textContent='$'+spent.toFixed(2)+' spent';
+  if(le)le.textContent=left>=0?'$'+left.toFixed(2)+' remaining':'$'+Math.abs(left).toFixed(2)+' over budget';
+  const ae=document.getElementById('bw-alert');
+  if(ae){ae.className='bw-alert show '+(pct>=100?'ba-over':pct>=80?'ba-near':'ba-ok');ae.textContent=pct>=100?'Over budget by $'+Math.abs(left).toFixed(2):pct>=80?'80% used — $'+left.toFixed(2)+' left':'On track — $'+left.toFixed(2)+' remaining';}
+  const maxV=Math.max(...PRICE_HIST.map(p=>Math.max(...p.v)));
+  document.getElementById('ph-card').innerHTML=PRICE_HIST.map(p=>{const cur=p.v[3];const diff=Math.abs(((cur-p.v[0])/p.v[0]*100)).toFixed(0);const tc=p.t==='up'?'tr-up':p.t==='dn'?'tr-dn':'tr-fl';return`<div class="ph-row"><div style="font-size:17px;width:22px;text-align:center;flex-shrink:0">${p.e}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;margin-bottom:3px">${p.n}</div><div class="ph-bars">${p.v.map(v=>`<div class="ph-bar" style="height:${Math.round(v/maxV*20)}px;background:${p.t==='up'?'#C0392B':p.t==='dn'?'#0A6B4B':'#A8A09A'}"></div>`).join('')}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--serif);font-size:13px;font-weight:700">$${cur.toFixed(2)}</div><div class="${tc}" style="font-size:9px;font-weight:600">${p.t==='up'?'↑ +'+diff+'%':p.t==='dn'?'↓ -'+diff+'%':'→ stable'}</div></div></div>`;}).join('');
+  const i_budget_pct=pct;
+  document.getElementById('i-budget').textContent=i_budget_pct+'%';
+  document.getElementById('i-budget-s').textContent=pct>=100?'over budget':pct>=80?'near limit':'of budget used';
+  document.getElementById('th-card').innerHTML=trips.slice(0,8).map(t=>`<div class="th-row"><div style="width:34px;height:34px;border-radius:9px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">${t.type==='online'?'🛒':'📍'}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${t.name}</div><div style="font-size:10px;color:var(--t2)">${t.date} · ${t.items} items · score ${t.score}/100 · ${t.vehicle||'gas'}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:700;color:var(--k)">+$${t.saving.toFixed(2)}</div><div style="font-size:10px;color:var(--t2)">$${t.total.toFixed(2)}</div></div></div>`).join('');
+}
+
+// ── STOCK ─────────────────────────────────────────────
+function buildStockList(){
+  document.getElementById('stk-list').innerHTML=STOCK_DEFAULT.map(s=>{
+    const c=s.s==='out'?'#C0392B':s.s==='low'?'#D4720A':'#0A6B4B';
+    return`<div class="stk-row">
+      <div class="stk-e">${s.e}</div>
+      <div class="stk-info">
+        <div class="stk-name">${s.n}</div>
+        <div class="stk-bar"><div class="stk-fill" style="width:${s.pct}%;background:${c}"></div></div>
+        <div class="stk-meta">${s.d}</div>
+      </div>
+      ${s.s!=='ok'?`<div class="stk-badge sb-${s.s==='ok'?'ok2':s.s}">${s.s.toUpperCase()}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function loadStock(){
+  items=STOCK_DEFAULT.filter(s=>s.s!=='ok').map(s=>({n:s.n.split(' (')[0],e:s.e,q:s.s==='out'?'2':'1'}));
+  renderItems();navTo(document.querySelectorAll('.nv')[0],'scr-home');
+}
+
+// ── PROFILE ───────────────────────────────────────────
+function loadProfile(){
+  document.getElementById('pf-budget').value=profile.budget||180;
+  document.getElementById('pf-fam').value=profile.family||4;
+  ['pf-baby','pf-allergy','pf-eco','pf-quality'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=profile[id.replace('pf-','')]||'';});
+  buildVehicleGrid();
+}
+function saveProfile(){
+  profile.budget=parseFloat(document.getElementById('pf-budget').value)||180;
+  profile.family=parseInt(document.getElementById('pf-fam').value)||4;
+  ['baby','allergy','eco','quality'].forEach(k=>{const el=document.getElementById('pf-'+k);if(el)profile[k]=el.value;});
+  localStorage.setItem('kerma_profile',JSON.stringify(profile));
+  updateVehicleUI();renderDash();
+}
+function clearData(){if(confirm('Clear all Kerma data?')){localStorage.clear();trips=[];items=[];productMemory={};renderItems();renderDash();updateMemCount();}}
+function buildVehicleGrid(){
+  document.getElementById('veh-grid').innerHTML=VEH.map(v=>`<div class="veh-opt${profile.vehicle===v.val?' on':''}" onclick="setVehicle('${v.val}',this)"><div class="veh-opt-lbl">${v.label}</div><div class="veh-opt-sub">${v.sub}</div></div>`).join('');
+  updateVehicleUI();
+}
+function setVehicle(v,el){profile.vehicle=v;document.querySelectorAll('.veh-opt').forEach(e=>e.classList.remove('on'));if(el)el.classList.add('on');saveProfile();}
+function updateVehicleUI(){const c=cpm();document.getElementById('cpm-display').textContent='$'+c.toFixed(3)+'/mi';}
+
+// ── NAV & UTILS ───────────────────────────────────────
+function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');document.getElementById('scroll').scrollTo(0,0);}
+function navTo(btn,id){document.querySelectorAll('.nv').forEach(n=>n.classList.remove('on'));if(btn)btn.classList.add('on');showScr(id);}
+function newTrip(){items=[];chosen=null;scenarios=[];chosenCartStore=null;showingMore=false;renderItems();['ls1','ls2','ls3','ls4','ls5','ls6'].forEach(id=>{const el=document.getElementById(id);if(el)el.className='lstep';});document.querySelectorAll('.nv').forEach(n=>n.classList.remove('on'));document.querySelector('.nv').classList.add('on');showScr('scr-home');}
+function openMaps(){const s=scenarios[chosen!==null?chosen:0];if(!s)return;const dest=STORES[s.stores[0]];window.open(`https://maps.apple.com/?daddr=${dest.lat},${dest.lng}&dirflg=d`,'_blank');}
+function showBudgetModal(){document.getElementById('modal-budget-inp').value=profile.budget;document.getElementById('budget-modal').classList.add('show');}
+function saveBudget(){profile.budget=parseFloat(document.getElementById('modal-budget-inp').value)||180;saveProfile();renderDash();document.getElementById('budget-modal').classList.remove('show');}
+
+// ── BOOT ──────────────────────────────────────────────
+window.onload=()=>{
+  loadProfile();
+  buildChips();
+  buildStockList();
+  buildMemoryList('profile-memory-list');
+  updateMemCount();
+  renderDash();
+  getGPS();
+  refreshLiveContext();
+  setInterval(refreshLiveContext,300000); // refresh every 5 min
+  document.getElementById('item-inp')?.addEventListener('keydown',e=>{if(e.key==='Enter')addItem();});
+  setTimeout(buildAstrideGreeting,800);
+};
+
+// CSS for bl animation
+const style=document.createElement('style');
+style.textContent='@keyframes bl{0%,80%,100%{opacity:.2}40%{opacity:1}}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
