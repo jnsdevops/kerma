@@ -1725,11 +1725,11 @@ function buildAisleGuide(storeKey){
 
   // Group by aisle
   const byAisle={};
-  storeItems.forEach(it=>{
+  storeItems.forEach((it,idx)=>{
     const pk=getPK(it.n);
     const aisle=store.aisles?.[pk]||'General';
     if(!byAisle[aisle])byAisle[aisle]=[];
-    byAisle[aisle].push(it);
+    byAisle[aisle].push({...it, _idx:idx});
   });
 
   igChecked={};
@@ -1746,10 +1746,11 @@ function buildAisleGuide(storeKey){
         const off2=it.off_data;
         const img2=off2?.img||mem?.img||null;
         const unitP=pk&&off2?.weight?'$'+(price/parseFloat(off2.weight)).toFixed(2)+'/'+off2.weight_unit:null;
-        return`<div class="ag-item-v2${igChecked[id]?' checked':''}" id="agi-${id}" onclick="toggleIG('${id}','${storeKey}')">
-          <div class="ag-check" id="agc-${id}">${igChecked[id]?'✓':''}</div>
+        const safeId=`${storeKey}_${it._idx!==undefined?it._idx:Math.random().toString(36).slice(2)}`;
+        return`<div class="ag-item-v2${igChecked[safeId]?' checked':''}" id="agi-${safeId}" onclick="toggleIG('${safeId}','${storeKey}')">
+          <div class="ag-check" id="agc-${safeId}">${igChecked[safeId]?'✓':''}</div>
           ${img2
-            ?`<img class="ag-img" src="${img2}" alt="${it.n}" onerror="this.outerHTML='<div class=ag-img-ph>'+ '${it.e}'+'</div>'" loading="lazy">`
+            ?`<img class="ag-img" src="${img2}" alt="" onerror="this.style.display='none'" loading="lazy">`
             :`<div class="ag-img-ph">${it.e}</div>`}
           <div class="ag-info">
             <div class="ag-name">${off2?.name||it.n}</div>
@@ -1778,16 +1779,18 @@ function toggleIG(id,storeKey){
 
 function updateAGProgress(storeKey,storeItems,storeTotal){
   const total=storeItems.length;
-  const checked=storeItems.filter(it=>{const id=`${storeKey}_${it.n.replace(/[\s\(\)]/g,'_')}`;return igChecked[id];}).length;
+  const checked=storeItems.filter((it,idx)=>{const id=`${storeKey}_${it._idx!==undefined?it._idx:idx}`;return igChecked[id];}).length;
   const remaining=total-checked;
   document.getElementById('ig-items-left').textContent=remaining;
   document.getElementById('ag-progress').textContent=`${checked} / ${total} items`;
-  const maxTotal=storeItems.reduce((s,it)=>s+Math.max(...Object.values(PRICES[getPK(it.n)||'milk']||{def:4.50}))*parseInt(it.q||1),0);
-  const checkedCost=storeItems.filter(it=>igChecked[`${storeKey}_${it.n.replace(/[\s\(\)]/g,'_')}`]).reduce((s,it)=>s+getPriceAtStore(it.n,storeKey)*parseInt(it.q||1),0)*(1-(STORES[storeKey].coupon||0));
+  const maxTotal=storeItems.reduce((s,it)=>{const pk=getPK(it.n);const p=pk?PRICES[pk]:null;return s+(p?Math.max(...Object.values(p)):4.50)*parseInt(it.q||1);},0);
+  const checkedCost=storeItems.filter((it,idx)=>igChecked[`${storeKey}_${it._idx!==undefined?it._idx:idx}`]).reduce((s,it)=>s+getPriceAtStore(it.n,storeKey)*parseInt(it.q||1),0)*(1-(STORES[storeKey].coupon||0));
   document.getElementById('ag-saving-live').textContent=`Saving $${Math.max(0,maxTotal-checkedCost).toFixed(2)}`;
   if(remaining===0&&total>0){
     saveTrip();
     setTimeout(()=>{
+      const saveEl=document.getElementById('cs-save');
+      if(saveEl)saveEl.textContent='$'+(maxTotal-checkedCost).toFixed(2);
       document.getElementById('conf-ico').textContent='🎉';
       document.getElementById('conf-title').textContent='Shopping complete!';
       document.getElementById('conf-sub').textContent='All items checked. Great trip!';
