@@ -1961,7 +1961,6 @@ body{font-family:var(--f-text);font-size:15px;line-height:1.5;background:var(--b
   </div>
 
 </div><!-- /scr-home -->
-</div><!-- /scr-home -->
 
 <!-- ═══ LOADING ═══ -->
 <div class="scr" id="scr-load">
@@ -2184,131 +2183,6 @@ body{font-family:var(--f-text);font-size:15px;line-height:1.5;background:var(--b
   <div class="srow"><div class="slbl">Trip history</div></div>
   <div class="th-card" id="th-card"><div style="padding:20px;text-align:center;font-size:12px;color:var(--t2)">No trips yet &mdash; start shopping!</div></div>
 </div>
-
-<!-- ═══ STOCK ═══ -->
-<div class="scr" id="scr-stock">
-  <div class="astride-card" style="background:linear-gradient(145deg,#1A3C5E,#1E5FAD)">
-    <div class="ac-top">
-      <div class="ac-avatar"><svg width="32" height="36" viewBox="0 0 54 64" fill="none"><rect width="54" height="64" rx="16" fill="#0A6B4B"/><rect x="16" y="13" width="6" height="38" rx="3" fill="white"/><path d="M22 32 L44 14" stroke="white" stroke-width="6" stroke-linecap="round"/><path d="M22 32 L44 50" stroke="white" stroke-width="6" stroke-linecap="round"/><circle cx="22" cy="32" r="5" fill="#C8882A"/></svg><div class="ac-dot"></div></div>
-      <div class="ac-info">
-        <div class="ac-label">Astride &middot; Stock Monitor</div>
-        <div class="ac-status">Monitoring your household</div>
-      </div>
-    </div>
-    <div class="ac-msg">Predicted stock based on your purchase patterns. <b>OUT</b> and <b>LOW</b> items are ready to add to your list.</div>
-  </div>
-  <div class="srow"><div class="slbl">Household stock</div><div class="smeta">Predicted</div></div>
-  <div class="stk-list" id="stk-list"></div>
-  <button class="btn-hero" onclick="loadStock()">&#9889; Build list from alerts</button>
-  <div class="srow"><div class="slbl">Product memory</div><div class="smeta" id="mem-count">0 products</div></div>
-  <div class="pm-card" id="mem-profile"></div>
-  <div class="srow" style="margin-top:4px"><div class="slbl">Scan product</div></div>
-  <div class="upc-wrap">
-    <div class="upc-grid">
-      <div class="upc-btn primary" onclick="simulateScan2()">&#128247; Scan</div>
-      <div class="upc-btn" onclick="document.getElementById('upc-manual2').style.display='block'">&#9998; Enter UPC</div>
-    </div>
-    <div id="upc-manual2" style="display:none">
-      <div class="upc-inp-row">
-        <input class="upc-inp" type="number" id="upc-inp2" placeholder="037000863427"/>
-        <button class="qa-add" onclick="lookupUPC('upc-inp2','upc-result2')">&#8594;</button>
-      </div>
-    </div>
-    <div id="upc-result2"></div>
-  </div>
-</div>
-
-<!-- ═══ PROFILE ═══ -->
-<div class="scr" id="scr-profile">
-
-  <!-- WHO IS DRIVING TODAY -->
-  <div id="driver-select-wrap" style="display:none">
-    <div class="sec-row"><div class="sec-lbl">Who is shopping today?</div></div>
-    <div id="driver-list" style="display:flex;flex-direction:column;gap:7px"></div>
-  </div>
-
-  <!-- DIETARY RESTRICTIONS -->
-  <div class="sec-row"><div class="sec-lbl">Diet &amp; restrictions</div></div>
-  <div style="background:var(--wh);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden">
-    <div style="padding:11px 16px;border-bottom:0.5px solid rgba(17,17,16,.06);font-size:12px;color:var(--t2);line-height:1.5">
-      Kerma filters all products and stores based on your family diet. Applied to every recommendation.
-    </div>
-    <div class="diet-grid" id="diet-grid"></div>
-  </div>
-
-  <!-- ALLERGIES -->
-  <div class="sec-row"><div class="sec-lbl">Allergies</div></div>
-  <div style="background:var(--wh);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden">
-    <div class="allergy-grid" id="allergy-grid"></div>
-  </div>
-
-  <!-- VEHICLES — inline, always visible -->
-  <div class="sec-row">
-    <div class="sec-lbl">Your vehicles</div>
-    <div class="sec-action" onclick="showAddVehicle()">+ Add</div>
-  </div>
-  <div style="background:var(--wh);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden">
-    <div class="veh-list" id="veh-list"></div>
-    <!-- Default vehicle selector (always visible) -->
-    <div class="veh-grid" id="veh-grid" style="padding:12px;border-top:0.5px solid rgba(17,17,16,.06)"></div>
-    <div class="cpm-row" style="padding:10px 16px;border-top:0.5px solid rgba(17,17,16,.06);display:flex;align-items:center;justify-content:space-between">
-      <span style="font-size:12px;color:var(--t2)">Real cost per mile</span>
-      <span style="font-size:13px;font-weight:700;color:var(--k)" id="cpm-display">$0.170/mi</span>
-    </div>
-  </div>
-
-  <!-- SHOPPING PREFERENCES -->
-  <div class="sec-row"><div class="sec-lbl">Shopping mode</div></div>
-  <div style="background:var(--wh);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden">
-    <div class="mode-chips" id="shopping-mode-chips"></div>
-  </div>
-
-  <!-- MULTI-STOP -->
-  <div class="sec-row"><div class="sec-lbl">Multi-stop trips</div></div>
-  <div style="background:var(--wh);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden">
-    <div style="padding:11px 16px;border-bottom:0.5px solid rgba(17,17,16,.06);font-size:12px;color:var(--t2)">
-      Maximum number of stores per trip. Kerma only suggests multi-stop when savings justify it.
-    </div>
-    <div class="stop-opts" id="stop-opts"></div>
-  </div>
-
-  <!-- HOUSEHOLD -->
-  <div class="sec-row"><div class="sec-lbl">Household</div></div>
-  <div class="pf-sec">
-    <div class="pf-row"><div class="pf-lbl">&#128205; Location</div><div style="font-size:13px;font-weight:600" id="pf-location">Irvine, CA</div></div>
-    <div class="pf-row"><div class="pf-lbl">&#128181; Weekly budget</div><input class="pf-inp" type="number" id="pf-budget" value="180" min="30" onchange="saveProfile()"></div>
-    <div class="pf-row"><div class="pf-lbl">&#128106; Family size</div><input class="pf-inp" type="number" id="pf-fam" value="4" min="1" max="12" onchange="saveProfile()"></div>
-    <div class="pf-row"><div class="pf-lbl">&#128682; Baby</div>
-      <select class="pf-sel" id="pf-baby" onchange="saveProfile()">
-        <option>No baby</option><option>Newborn (0-3m)</option><option>Infant (3-12m)</option><option>Toddler (1-3y)</option>
-      </select>
-    </div>
-    <div class="pf-row"><div class="pf-lbl">&#9851; Eco mode</div>
-      <select class="pf-sel" id="pf-eco" onchange="saveProfile()">
-        <option value="none">None</option><option value="local">Local first</option><option value="organic">Organic</option><option value="lowcarbon">Low carbon</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- LANGUAGE -->
-  <div class="sec-row"><div class="sec-lbl" data-t="language_pref">Language</div></div>
-  <div class="pf-sec">
-    <div class="pf-row" style="flex-wrap:wrap;gap:8px;padding:12px 16px">
-      <div id="lang-grid" style="display:flex;flex-wrap:wrap;gap:7px;width:100%"></div>
-    </div>
-  </div>
-
-  <!-- PRIVACY -->
-  <div class="sec-row"><div class="sec-lbl">Privacy</div></div>
-  <div class="pf-sec">
-    <div class="pf-row"><div class="pf-lbl">&#128274; Storage</div><div style="font-size:13px;font-weight:600;color:var(--k)">On device only</div></div>
-    <div class="pf-row"><div class="pf-lbl">&#128225; Location</div><div style="font-size:13px;font-weight:600;color:var(--k)">Session only</div></div>
-    <div class="pf-row" style="cursor:pointer" onclick="clearData()"><div class="pf-lbl">&#128465; Clear all data</div><div style="font-size:13px;font-weight:600;color:var(--rd)">Clear &#8250;</div></div>
-  </div>
-
-  <div style="text-align:center;font-size:10px;color:var(--t3);padding:8px;letter-spacing:.3px">KERMA v18.0 &middot; PIONEXIS &middot; ASTRIDE AI &middot; ORANGE COUNTY</div>
-
-</div><!-- /scr-profile -->
 
 <!-- ═══ STOCK ═══ -->
 <div class="scr" id="scr-stock">
