@@ -3447,13 +3447,41 @@ class Component extends DCLogic {
     return {items:s.items.map(function(it){return {name:it.name,qty:it.qty||1,emoji:'shop'};}),household:{location:{lat:33.6846,lng:-117.8265,city:'Irvine',zip_code:'92618'},members:{adults:s.household>=2?2:1,kids:s.household>2?s.household-2:0},vehicle:s.vehicle?{type:s.vehicle}:{type:'gas',mpg:28},budget_weekly:180,time_value:0.33},weather_penalty:0};
   };
 
+  _apiToInstore = (scenarios) => {
+    const storeMap = {wm:'walmart',rp:'ralphs',tg:'target-s',co:'costco'};
+    const nameMap = {wm:'Walmart · Tustin',rp:"Ralph's · Irvine",tg:'Target · Lake Forest',co:'Costco · Laguna Hills'};
+    const glyphMap = {wm:'W',rp:'R',tg:'T',co:'C'};
+    return scenarios.filter(function(s){return s.type==='store';}).map(function(s){
+      var sid = s.stores[0];
+      return {
+        id: storeMap[sid]||sid,
+        name: nameMap[sid]||s.name,
+        mode:'in-store',
+        glyph: glyphMap[sid]||'?',
+        basket: s.costs.items,
+        coupons: s.costs.coupons,
+        dist: s.costs.total_miles/2,
+        drive: Math.round(s.costs.total_minutes*0.15),
+        nav: Math.round(s.costs.total_minutes*0.35),
+        checkout: Math.round(s.costs.total_minutes*0.30),
+        load: Math.round(s.costs.total_minutes*0.20),
+        _apiTotal: s.costs.total,
+        _saving: s.saving
+      };
+    });
+  };
+
   chooseInstore = async () => {
     this.setState({flow:'optimizing',planMode:'instore'});
     try {
       const token = await this.getToken();
       const resp = await fetch(this._RAILWAY+'/v1/optimize',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(this._buildBody())});
-      if (resp.ok) { const data = await resp.json(); const best = data.scenarios[0]; this.setState({flow:'decision',_apiResult:data,pendingSaved:best?best.saving:19.4}); }
-      else { this.setState({flow:'decision'}); }
+      if (resp.ok) {
+        const data = await resp.json();
+        const best = data.scenarios[0];
+        const instoreScns = this._apiToInstore(data.scenarios);
+        this.setState({flow:'decision', _apiResult:data, _instoreDef: instoreScns.length>0?instoreScns:null, pendingSaved:best?best.saving:19.4, _astrideMsg:data.astride_message});
+      } else { this.setState({flow:'decision'}); }
     } catch(e) { console.warn('kerma:optimize',e); this.setState({flow:'decision'}); }
   };
 
@@ -3462,8 +3490,11 @@ class Component extends DCLogic {
     try {
       const token = await this.getToken();
       const resp = await fetch(this._RAILWAY+'/v1/optimize',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(this._buildBody())});
-      if (resp.ok) { const data = await resp.json(); const sc = data.scenarios.filter(function(s){return s.type==='online';})[0]||data.scenarios[0]; this.setState({flow:'decisionOnline',_apiResult:data,pendingSaved:sc?sc.saving:14.24}); }
-      else { this.setState({flow:'decisionOnline'}); }
+      if (resp.ok) {
+        const data = await resp.json();
+        const sc = data.scenarios.filter(function(s){return s.type==='online';})[0]||data.scenarios[0];
+        this.setState({flow:'decisionOnline',_apiResult:data,pendingSaved:sc?sc.saving:14.24,_astrideMsg:data.astride_message});
+      } else { this.setState({flow:'decisionOnline'}); }
     } catch(e) { console.warn('kerma:online',e); this.setState({flow:'decisionOnline'}); }
   };
   startShopping = (saved) => { this.setState({ flow:null, screen:'shop', pendingSaved: typeof saved==='number'?saved:19.4 }); this.toTop(); };
@@ -3757,7 +3788,7 @@ class Component extends DCLogic {
 
     // Per-store inputs. TWO modes the user can browse independently:
     //  • in-store (4 stores) — full time model    • online (4 services) — basket + delivery fee
-    const INSTORE_DEF = [
+    const INSTORE_DEF = (s._instoreDef && s._instoreDef.length>0) ? s._instoreDef : [
       { id:'walmart', name:'Walmart · Irvine',  mode:'in-store', glyph:'W', basket:79.40, coupons:4.10, dist:3.4, drive:8,  nav:18, checkout:6,  load:6  },
       { id:'costco',  name:'Costco · Tustin',   mode:'in-store', glyph:'C', basket:74.20, coupons:2.00, dist:9.1, drive:19, nav:22, checkout:10, load:12 },
       { id:'ralphs',  name:"Ralph's · Main St", mode:'in-store', glyph:'R', basket:86.10, coupons:5.00, dist:5.2, drive:12, nav:14, checkout:7,  load:4  },
