@@ -3209,9 +3209,6 @@ Thu · Veggie stir-fry" style="width:100%;height:168px;border:none;outline:none;
 class Component extends DCLogic {
   state = {
     screen: 'home',
-    _instoreDef: null,
-    _apiResult: null,
-    _astrideMsg: null,
     flow: null,           // null | optimizing | decision | confirmed | add | item
     checked: {},
     doneTrips: [],   // completed optimized trips — Stage gating per memo (empty = first-time)
@@ -3429,77 +3426,8 @@ class Component extends DCLogic {
   closeFlow = () => this.setState({ flow:null });
 
   optimize = () => { if(!this.state.items.length) return; this.setState({ flow:'mode' }); };
-  // KERMA LIVE BACKEND
-  _RAILWAY = 'https://kerma-backend-production.up.railway.app';
-  _SB_URL = 'https://aemgzoxehsshjobwwuek.supabase.co';
-  _SB_KEY = 'sb_publishable_JQ2f5dv3gT3b5BIagInh_Q_KnQqWvNH';
-  _jwt = null;
-
-  getToken = async () => {
-    if (this._jwt) return this._jwt;
-    try {
-      let r = await fetch(this._SB_URL+'/auth/v1/token?grant_type=password', {method:'POST',headers:{'apikey':this._SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:'demo@kerma.ai',password:'kerma-demo-2025'})});
-      let d = await r.json();
-      if (!d.access_token) { r = await fetch(this._SB_URL+'/auth/v1/signup', {method:'POST',headers:{'apikey':this._SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:'demo@kerma.ai',password:'kerma-demo-2025'})}); d = await r.json(); }
-      this._jwt = d.access_token || null; return this._jwt;
-    } catch(e) { console.warn('kerma:auth',e); return null; }
-  };
-
-  _buildBody = () => {
-    const s = this.state;
-    return {items:s.items.map(function(it){return {name:it.name,qty:it.qty||1,emoji:'shop'};}),household:{location:{lat:33.6846,lng:-117.8265,city:'Irvine',zip_code:'92618'},members:{adults:s.household>=2?2:1,kids:s.household>2?s.household-2:0},vehicle:s.vehicle?{type:s.vehicle}:{type:'gas',mpg:28},budget_weekly:180,time_value:0.33},weather_penalty:0};
-  };
-
-  _apiToInstore = (scenarios) => {
-    const storeMap = {wm:'walmart',rp:'ralphs',tg:'target-s',co:'costco'};
-    const nameMap = {wm:'Walmart · Tustin',rp:"Ralph's · Irvine",tg:'Target · Lake Forest',co:'Costco · Laguna Hills'};
-    const glyphMap = {wm:'W',rp:'R',tg:'T',co:'C'};
-    return scenarios.filter(function(s){return s.type==='store';}).map(function(s){
-      var sid = s.stores[0];
-      return {
-        id: storeMap[sid]||sid,
-        name: nameMap[sid]||s.name,
-        mode:'in-store',
-        glyph: glyphMap[sid]||'?',
-        basket: s.costs.items,
-        coupons: s.costs.coupons,
-        dist: s.costs.total_miles/2,
-        drive: Math.round(s.costs.total_minutes*0.15),
-        nav: Math.round(s.costs.total_minutes*0.35),
-        checkout: Math.round(s.costs.total_minutes*0.30),
-        load: Math.round(s.costs.total_minutes*0.20),
-        _apiTotal: s.costs.total,
-        _saving: s.saving
-      };
-    });
-  };
-
-  chooseInstore = async () => {
-    this.setState({flow:'optimizing',planMode:'instore'});
-    try {
-      const token = await this.getToken();
-      const resp = await fetch(this._RAILWAY+'/v1/optimize',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(this._buildBody())});
-      if (resp.ok) {
-        const data = await resp.json();
-        const best = data.scenarios[0];
-        const instoreScns = this._apiToInstore(data.scenarios);
-        this.setState({flow:'decision', _apiResult:data, _instoreDef: instoreScns.length>0?instoreScns:null, pendingSaved:best?best.saving:19.4, _astrideMsg:data.astride_message});
-      } else { this.setState({flow:'decision'}); }
-    } catch(e) { console.warn('kerma:optimize',e); this.setState({flow:'decision'}); }
-  };
-
-  chooseOnline = async () => {
-    this.setState({flow:'optimizingOnline',planMode:'online'});
-    try {
-      const token = await this.getToken();
-      const resp = await fetch(this._RAILWAY+'/v1/optimize',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(this._buildBody())});
-      if (resp.ok) {
-        const data = await resp.json();
-        const sc = data.scenarios.filter(function(s){return s.type==='online';})[0]||data.scenarios[0];
-        this.setState({flow:'decisionOnline',_apiResult:data,pendingSaved:sc?sc.saving:14.24,_astrideMsg:data.astride_message});
-      } else { this.setState({flow:'decisionOnline'}); }
-    } catch(e) { console.warn('kerma:online',e); this.setState({flow:'decisionOnline'}); }
-  };
+  chooseInstore = () => { this.setState({ flow:'optimizing', planMode:'instore' }); clearTimeout(this._t); this._t=setTimeout(()=>this.setState({flow:'decision'}),2400); };
+  chooseOnline = () => { this.setState({ flow:'optimizingOnline', planMode:'online' }); clearTimeout(this._t); this._t=setTimeout(()=>this.setState({flow:'decisionOnline'}),2400); };
   startShopping = (saved) => { this.setState({ flow:null, screen:'shop', pendingSaved: typeof saved==='number'?saved:19.4 }); this.toTop(); };
   orderOnline = (saved) => { this.setState({ flow:null, screen:'online', pendingSaved: typeof saved==='number'?saved:14.24 }); this.toTop(); };
   toggleScn(id){ this.setState(s=>{ const n={...s.scn}; if(n[id]) delete n[id]; else n[id]=true; return { scn:n }; }); }
@@ -3791,7 +3719,7 @@ class Component extends DCLogic {
 
     // Per-store inputs. TWO modes the user can browse independently:
     //  • in-store (4 stores) — full time model    • online (4 services) — basket + delivery fee
-    const INSTORE_DEF = (s._instoreDef && s._instoreDef.length>0) ? s._instoreDef : [
+    const INSTORE_DEF = [
       { id:'walmart', name:'Walmart · Irvine',  mode:'in-store', glyph:'W', basket:79.40, coupons:4.10, dist:3.4, drive:8,  nav:18, checkout:6,  load:6  },
       { id:'costco',  name:'Costco · Tustin',   mode:'in-store', glyph:'C', basket:74.20, coupons:2.00, dist:9.1, drive:19, nav:22, checkout:10, load:12 },
       { id:'ralphs',  name:"Ralph's · Main St", mode:'in-store', glyph:'R', basket:86.10, coupons:5.00, dist:5.2, drive:12, nav:14, checkout:7,  load:4  },
@@ -4237,5 +4165,84 @@ class Component extends DCLogic {
 }
 </script>
 
+
+
+<script>
+(function() {
+  var RAILWAY = 'https://kerma-backend-production.up.railway.app';
+  var SB_URL = 'https://aemgzoxehsshjobwwuek.supabase.co';
+  var SB_KEY = 'sb_publishable_JQ2f5dv3gT3b5BIagInh_Q_KnQqWvNH';
+  var _jwt = null;
+
+  async function getToken() {
+    if (_jwt) return _jwt;
+    try {
+      var r = await fetch(SB_URL+'/auth/v1/token?grant_type=password', {
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({email:'demo@kerma.ai',password:'kerma-demo-2025'})
+      });
+      var d = await r.json();
+      if (!d.access_token) {
+        r = await fetch(SB_URL+'/auth/v1/signup', {
+          method:'POST',
+          headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+          body:JSON.stringify({email:'demo@kerma.ai',password:'kerma-demo-2025'})
+        });
+        d = await r.json();
+      }
+      _jwt = d.access_token || null;
+      return _jwt;
+    } catch(e) { console.warn('kerma:auth',e); return null; }
+  }
+
+  async function callOptimize() {
+    try {
+      var token = await getToken();
+      var body = {
+        items:[{name:'milk',qty:1,emoji:'shop'},{name:'eggs',qty:1,emoji:'shop'},{name:'bread',qty:1,emoji:'shop'}],
+        household:{
+          location:{lat:33.6846,lng:-117.8265,city:'Irvine',zip_code:'92618'},
+          members:{adults:2,kids:0},
+          vehicle:{type:'gas',mpg:28},
+          budget_weekly:180,
+          time_value:0.33
+        },
+        weather_penalty:0
+      };
+      var resp = await fetch(RAILWAY+'/v1/optimize', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify(body)
+      });
+      if (resp.ok) {
+        var data = await resp.json();
+        console.log('[Kerma] API OK:', data.astride_message);
+        window._kermaApiData = data;
+        // Show astride message on screen if element exists
+        var msgs = document.querySelectorAll('[data-astride], .astride-msg');
+        if (msgs.length) msgs.forEach(function(el){ el.textContent = data.astride_message; });
+        return data;
+      }
+    } catch(e) { console.warn('kerma:optimize',e); }
+    return null;
+  }
+
+  window.kermaAPI = { callOptimize: callOptimize, getToken: getToken };
+
+  // Auto-call on optimize button click
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var txt = btn.textContent || '';
+    if (txt.toLowerCase().includes('in-store') || txt.toLowerCase().includes('instore')) {
+      console.log('[Kerma] Intercepted in-store click - calling API');
+      callOptimize();
+    }
+  }, true);
+
+  console.log('[Kerma v16] API interceptor ready');
+})();
+</script>
 
 </body></html>
