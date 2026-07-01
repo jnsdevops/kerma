@@ -3209,6 +3209,9 @@ Thu · Veggie stir-fry" style="width:100%;height:168px;border:none;outline:none;
 class Component extends DCLogic {
   state = {
     screen: 'home',
+    _instoreDef: null,
+    _apiResult: null,
+    _astrideMsg: null,
     flow: null,           // null | optimizing | decision | confirmed | add | item
     checked: {},
     doneTrips: [],   // completed optimized trips — Stage gating per memo (empty = first-time)
