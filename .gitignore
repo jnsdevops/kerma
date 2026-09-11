@@ -6,3 +6,4 @@ android/
 .DS_Store
 *.log
 dist/
+*.backup
